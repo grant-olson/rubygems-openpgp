@@ -11,6 +11,5 @@ Gem::Specification.new do |s|
 		   "lib/rubygems/commands/vinstall_command.rb",
 		   "lib/rubygems/commands/sbuild_command.rb",
                    "lib/rubygems/commands/sign_command.rb"]
-  s.homepage    =
-    'http://rubygems.org/gems/hola'
+  s.homepage    = 'http://www.grant-olson.net'
 end
