@@ -1,5 +1,7 @@
 require "rubygems/command"
+require "rubygems/package"
 require 'rubygems/version_option'
+require "rubygems/gem_openpgp"
 
 class Gem::Commands::VerifyCommand < Gem::Command
 
@@ -26,8 +28,28 @@ class Gem::Commands::VerifyCommand < Gem::Command
 
   def execute
     version = options[:version] || Gem::Requirement.default
+    gem, specs = get_one_gem_name, []
 
-    puts "BOOM"
+    file = File.open(gem,"r")
+
+    tar_files = {}
+
+    Gem::Package::TarReader.new(file).each do |f|
+      tar_files[f.full_name] = f.read()
+    end
+    
+    tar_files.keys.each do |file_name|
+      next if file_name[-4..-1] == ".asc"
+      puts "Verifying #{file_name}..."
+
+      sig_file_name = file_name + ".asc"
+      if !tar_files.has_key? sig_file_name
+        puts "WARNING!!! No sig found for #{file_name}"
+        next
+      end
+      
+      Gem::OpenPGP.verify(tar_files[file_name], tar_files[sig_file_name])
+    end
   end
 
 end
