@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   		   "lib/rubygems/commands/verify_command.rb",
 		   "lib/rubygems/commands/vinstall_command.rb",
 		   "lib/rubygems/commands/sbuild_command.rb",
-                   "lib/rubygems/commands/sign_command.rb"]
+                   "lib/rubygems/commands/sign_command.rb",
+		   "lib/rubygems/gem_openpgp.rb"]
   s.homepage    = 'http://www.grant-olson.net'
 end
