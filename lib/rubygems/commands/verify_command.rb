@@ -40,11 +40,11 @@ class Gem::Commands::VerifyCommand < Gem::Command
     
     tar_files.keys.each do |file_name|
       next if file_name[-4..-1] == ".asc"
-      puts "Verifying #{file_name}..."
+      say "Verifying #{file_name}..."
 
       sig_file_name = file_name + ".asc"
       if !tar_files.has_key? sig_file_name
-        puts "WARNING!!! No sig found for #{file_name}"
+        say "WARNING!!! No sig found for #{file_name}"
         next
       end
       

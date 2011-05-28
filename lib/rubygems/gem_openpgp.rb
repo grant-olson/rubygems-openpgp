@@ -43,8 +43,8 @@ module Gem::OpenPGP
       [ stdout.read(), stderr.read() ]
     end
 
-    puts err
-    puts res
+    say err
+    say res
 
     raise "gpg encountered errors! #{err}" if exit_status != 0
   end

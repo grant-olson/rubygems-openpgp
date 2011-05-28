@@ -43,14 +43,14 @@ class Gem::Commands::SignCommand < Gem::Command
     signed_gem = Gem::Package::TarWriter.new(signed_gem_file)
 
     Gem::Package::TarReader.new(unsigned_gem_file).each do |f|
-      puts f.full_name.inspect
+      say f.full_name.inspect
       
       if f.full_name[-4..-1] == ".asc"
-        puts "Skipping old signature file #{f.full_name}"
+        say "Skipping old signature file #{f.full_name}"
         next
       end
       
-      puts "Signing #{f.full_name.inspect}..."
+      say "Signing #{f.full_name.inspect}..."
 
       file_contents = f.read()
 
