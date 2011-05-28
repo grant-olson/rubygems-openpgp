@@ -43,8 +43,14 @@ module Gem::OpenPGP
       [ stdout.read(), stderr.read() ]
     end
 
-    say err
-    say res
+    color_code = if exit_status == 0
+                   "32"
+                 else
+                   "31"
+                 end
+    
+    puts "\033[#{color_code}m#{err}\033[0m"
+    puts "\033[37m #{res} \033[0m"
 
     raise "gpg encountered errors! #{err}" if exit_status != 0
   end
