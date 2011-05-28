@@ -27,7 +27,7 @@ class Gem::Commands::SbuildCommand < Gem::Command
   def execute
     version = options[:version] || Gem::Requirement.default
 
-    puts "BOOM"
+    raise "Not implemented yet"
   end
 
 end

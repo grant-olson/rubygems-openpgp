@@ -27,7 +27,7 @@ class Gem::Commands::VinstallCommand < Gem::Command
   def execute
     version = options[:version] || Gem::Requirement.default
 
-    puts "BOOM"
+    puts "Not implemented yet."
   end
 
 end
