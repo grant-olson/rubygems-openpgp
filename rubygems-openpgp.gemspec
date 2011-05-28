@@ -12,5 +12,5 @@ Gem::Specification.new do |s|
 		   "lib/rubygems/commands/sbuild_command.rb",
                    "lib/rubygems/commands/sign_command.rb",
 		   "lib/rubygems/gem_openpgp.rb"]
-  s.homepage    = 'http://www.grant-olson.net'
+  s.homepage    = 'https://github.com/grant-olson/rubygems-openpgp'
 end
