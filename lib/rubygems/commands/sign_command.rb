@@ -63,7 +63,7 @@ class Gem::Commands::SignCommand < Gem::Command
         outfile.write(Gem::OpenPGP.detach_sign(file_contents))
       end
 
-      
+      File.delete unsigned_gem_file
     end
   rescue Exception => ex
     FileUtils.mv unsigned_gem_file, gem
