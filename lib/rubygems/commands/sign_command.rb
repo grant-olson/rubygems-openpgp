@@ -13,8 +13,8 @@ class Gem::Commands::SignCommand < Gem::Command
 
     add_version_option
 
-    add_option('--key', "Specify key id if you don't want to use your default gpg key") do |key, options|
-      puts all.inspect, options.inspect
+    add_option('--key KEY', "Specify key id if you don't want to use your default gpg key") do |key, options|
+      options[:key] = key
     end
   end
 
@@ -34,7 +34,6 @@ class Gem::Commands::SignCommand < Gem::Command
     version = options[:version] || Gem::Requirement.default
     gem, specs = get_one_gem_name, []
 
-    
     unsigned_gem = gem + ".unsigned"
     FileUtils.mv gem, unsigned_gem
     
@@ -60,10 +59,9 @@ class Gem::Commands::SignCommand < Gem::Command
       end
 
       signed_gem.add_file(f.full_name + ".asc", 0644) do |outfile|
-        outfile.write(Gem::OpenPGP.detach_sign(file_contents))
+        outfile.write(Gem::OpenPGP.detach_sign(file_contents,options[:key]))
       end
 
-      File.delete unsigned_gem_file
     end
   rescue Exception => ex
     FileUtils.mv unsigned_gem_file, gem
