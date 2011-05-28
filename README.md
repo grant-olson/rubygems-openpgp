@@ -10,36 +10,6 @@ My proposal as to why we should do so, and how to add certification
 infrastructure into place, follows.  Note this project doesn't attempt
 to address the issue of creating a ruby gem Signing Authority.
 
-Verification Example
---------------------
-
-A test gem **openpgp_signed_hola** is on rubygems.org.  To try out
-this extension:
-
-        gem fetch openpgp_signed_hola
-        gem verify openpgp_signed_hola-0.0.0.gem
-        gem install openpgp_signed_hola-0.0.0.gem
-
-Signing example
----------------
-
-        gem build openpgp_signed_hola.gemspec
-        gem sign openpgp_signed_hola-0.0.0.gemspec
-        gem push opnepgp_signed_hola-0.0.0.gemspec
-
-Future Options
---------------
-
-In the future, I hope to add:
-
-`gem sbuild existing-gem.gemspec`
-
-Which would build and sign in one step, and:
-
-`gem vinstall existing-gem-0.0.0.gem`
-
-Which would verify the gem and only install if gpg verification passes. 
-
 Prerequisites
 -------------
 
@@ -70,6 +40,90 @@ If you use this key for anything more than a few local tests, please:
 key if a malicious user gains access.
 
 1. Read the GNU Privacy Handbook above.
+
+Signing example
+---------------
+
+        gem build openpgp_signed_hola.gemspec
+        gem sign openpgp_signed_hola-0.0.0.gemspec
+        gem push opnepgp_signed_hola-0.0.0.gemspec
+
+Verification Example
+--------------------
+
+A test gem **openpgp_signed_hola** is on rubygems.org.  To try out
+this extension:
+
+        gem fetch openpgp_signed_hola
+        gem verify openpgp_signed_hola-0.0.0.gem
+        gem install openpgp_signed_hola-0.0.0.gem
+
+But That Just Failed!
+---------------------
+
+The first time you do this, the `gem verify` command will probably
+fail.  This is because you don't have my public key.  To automatically
+retrieve the key from the keyservers, run:
+
+        gem verify --get-key openpgp_signed_hola-0.0.0.gem
+
+The key will be automatically downloaded, and verification should now
+succeed.
+
+There are security implications here.  You've downloaded the key based
+on the information contained in the gem itself.  If a malicious user
+has tampered with the gem, they could easily provide a forged OpenPGP
+key as well.  This is why your output includes the following warning:
+
+        gpg: WARNING: This key is not certified with a trusted signature!
+        gpg:          There is no indication that the signature belongs to the owner.
+
+You still don't know if this key *really* belongs to me.  If possible,
+you should verify the key signature through an out-band-channel.  This
+may be the project page, a release email from the author, or some
+other means.
+
+For example, you can obtain the fingerprint on my key from [my
+personal website](http://www.grant-olson.net/openpgp-key).
+
+I've also included it right here in the README hosted on github:
+
+        pub   2048R/E3B5806F 2010-01-11 [expires: 2012-01-04]
+              Key fingerprint = A530 C31C D762 0D26 E2BA  C384 B6F6 FFD0 E3B5 806F
+        uid                  Grant T. Olson (Personal email) <kgo@grant-olson.net>
+        uid                  Grant T. Olson (pikimal) <grant@pikimal.com>
+        sub   2048R/6A8F7CF6 2010-01-11 [expires: 2012-01-04]
+        sub   2048R/A18A54D6 2010-03-01 [expires: 2012-01-04]
+        sub   2048R/D53982CE 2010-08-31 [expires: 2012-01-04]
+
+Even better would be obtaining the key fingerprint from me personally,
+but this can often be impractical.
+
+In any case, you should verify the key fingerprint listed in the
+message from one of these alternate sources.  If they match, the
+signature is (hopefully) valid, assuming an attacker hasn't managed to
+compromise rubygems, github, and my personal website.
+
+If the fingerprints DO NOT match, you probably want to delete the
+invalid key from your keyring:
+
+        gpg --delete-key <<KEY_ID>>
+
+If you feel confident that the key is valid based on your external
+fingerprint checks, you can make a signature on your gpg keyring.  I
+would advise making a local signature unless you've validated the
+fingerprint in person.  This means that you feel confident that the
+key is valid, but you're not making any representations to the outside
+world.  To do so, run:
+
+        gpg --lsign <<KEY_ID>>
+
+After this, you will no longer receive WARNINGs about untrusted
+sources for any gems signed by this key/author.
+
+Unfortunately, authentication is a hard problem.  See my proposal
+below for a potential solution to provide reasonable assurances about
+key validity without having to manually confirm everything.
 
 Motivation
 ----------
