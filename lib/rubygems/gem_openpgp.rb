@@ -26,7 +26,7 @@ module Gem::OpenPGP
     sig
   end
 
-  def self.verify data, sig
+  def self.verify data, sig, get_key=false
     data_file = Tempfile.new("rubygems_data")
     data_file.write(data)
     data_file.close
@@ -35,7 +35,10 @@ module Gem::OpenPGP
     sig_file.write(sig)
     sig_file.close
 
-    cmd = "gpg --verify #{sig_file.path} #{data_file.path}"
+    get_key_params = "--keyserver pool.sks-keyservers.net --keyserver-options auto-key-retrieve"
+    get_key_params = "" if get_key != true
+
+    cmd = "gpg #{get_key_params} --verify #{sig_file.path} #{data_file.path}"
     exit_status = nil
     res, err = Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
       stdin.close

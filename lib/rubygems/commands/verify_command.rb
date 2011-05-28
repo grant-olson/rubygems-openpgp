@@ -12,6 +12,10 @@ class Gem::Commands::VerifyCommand < Gem::Command
 
     add_version_option
 
+    add_option('--get-key', "If the key is not available, download it from a keyserver") do |key, options|
+      options[:get_key] = true
+    end
+
   end
 
   def arguments
@@ -48,7 +52,7 @@ class Gem::Commands::VerifyCommand < Gem::Command
         next
       end
       
-      Gem::OpenPGP.verify(tar_files[file_name], tar_files[sig_file_name])
+      Gem::OpenPGP.verify(tar_files[file_name], tar_files[sig_file_name], options[:get_key])
     end
   end
 
