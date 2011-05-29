@@ -88,11 +88,11 @@ module Gem::OpenPGP
 
       file_contents = f.read()
 
-      signed_gem.add_file(f.full_name, 0644) do |outfile|
+      signed_gem.add_file(f.full_name, 0666) do |outfile|
         outfile.write(file_contents)
       end
 
-      signed_gem.add_file(f.full_name + ".asc", 0644) do |outfile|
+      signed_gem.add_file(f.full_name + ".asc", 0666) do |outfile|
         outfile.write(Gem::OpenPGP.detach_sign(file_contents,key,homedir))
       end
 
