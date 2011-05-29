@@ -42,8 +42,13 @@ class Gem::Commands::SignCommand < Gem::Command
     gem, specs = get_one_gem_name, []
 
     unsigned_gem = gem + ".unsigned"
-    FileUtils.mv gem, unsigned_gem
-    
+
+    begin
+      FileUtils.mv gem, unsigned_gem
+    rescue Errno::ENOENT => ex
+      raise Gem::CommandLineError, "The gem #{gem} does not seem to exist. (#{ex.message})"
+    end
+
     unsigned_gem_file = File.open(unsigned_gem, "r")
     signed_gem_file = File.open(gem, "w")
 
