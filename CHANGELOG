@@ -1,6 +1,8 @@
 1.1 - 2011-05-28
 ================
 
+* Provide a friendly error if gem isn't found when verifying.
+
 * We no longer accidentally swallowing the command line validation in
   SignCommand.
 

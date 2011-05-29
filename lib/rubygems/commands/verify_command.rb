@@ -1,7 +1,7 @@
-require "rubygems/command"
-require "rubygems/package"
+require 'rubygems/command'
+require 'rubygems/package'
 require 'rubygems/version_option'
-require "rubygems/gem_openpgp"
+require 'rubygems/gem_openpgp'
 
 # Verifies a gem signed by the 'sign' command.  Iterates through the
 # gem contents and verifies all embedded files, if possible.  Errors
@@ -40,8 +40,12 @@ class Gem::Commands::VerifyCommand < Gem::Command
     version = options[:version] || Gem::Requirement.default
     gem, specs = get_one_gem_name, []
 
-    file = File.open(gem,"r")
-
+    begin
+      file = File.open(gem,"r")
+    rescue Errno::ENOENT => ex
+      raise Gem::CommandLineError, "Gem #{gem} not found.  Note you can only verify local gems at this time, so you may need to run 'gem fetch #{gem}' before verifying."  
+    end
+    
     tar_files = {}
 
     Gem::Package::TarReader.new(file).each do |f|
