@@ -14,7 +14,7 @@ class Gem::Commands::VerifyCommand < Gem::Command
   include Gem::VersionOption
 
   def initialize # :nodoc:
-    super 'verify', 'Verify gem with your OpenPGP key'
+    super 'verify', 'Verifies a local gem that has been signed via OpenPGP.  This helps to ensure the gem has not been tampered with in transit.'
 
     add_version_option
 
@@ -33,7 +33,7 @@ class Gem::Commands::VerifyCommand < Gem::Command
   end
 
   def usage # :nodoc:
-    "blah blah"
+    "gem verify GEMNAME"
   end
 
   def execute # :nodoc:

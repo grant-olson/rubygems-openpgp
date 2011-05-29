@@ -1,6 +1,9 @@
 1.1 - 2011-05-28
 ================
 
+* We no longer accidentally swallowing the command line validation in
+  SignCommand.
+
 * Validate that actual key id is in the form of 0xDEADBEEF to
   eliminate potential gpg trickery.
 

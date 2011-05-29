@@ -16,7 +16,7 @@ class Gem::Commands::SignCommand < Gem::Command
   include Gem::VersionOption
 
   def initialize # :nodoc:
-    super 'sign', 'Sign existing gem with your OpenPGP key', :key => nil
+    super 'sign', 'Signs an existing gem with your OpenPGP key.  This allows third parties to verify the key later via the \'gem verify\' command.', :key => nil
 
     add_version_option
 
@@ -34,7 +34,7 @@ class Gem::Commands::SignCommand < Gem::Command
   end
 
   def usage # :nodoc:
-    "blah blah"
+    "gem sign GEMNAME"
   end
 
   def execute  # :nodoc:
@@ -71,7 +71,10 @@ class Gem::Commands::SignCommand < Gem::Command
 
     end
   rescue Exception => ex
-    FileUtils.mv unsigned_gem_file, gem
+    if unsigned_gem_file
+      FileUtils.mv unsigned_gem_file, gem
+    end
+    
     raise
   end
 
