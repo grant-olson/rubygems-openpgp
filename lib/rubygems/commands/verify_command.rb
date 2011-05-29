@@ -39,31 +39,8 @@ class Gem::Commands::VerifyCommand < Gem::Command
   def execute # :nodoc:
     version = options[:version] || Gem::Requirement.default
     gem, specs = get_one_gem_name, []
-
-    begin
-      file = File.open(gem,"r")
-    rescue Errno::ENOENT => ex
-      raise Gem::CommandLineError, "Gem #{gem} not found.  Note you can only verify local gems at this time, so you may need to run 'gem fetch #{gem}' before verifying."  
-    end
-    
-    tar_files = {}
-
-    Gem::Package::TarReader.new(file).each do |f|
-      tar_files[f.full_name] = f.read()
-    end
-    
-    tar_files.keys.each do |file_name|
-      next if file_name[-4..-1] == ".asc"
-      say "Verifying #{file_name}..."
-
-      sig_file_name = file_name + ".asc"
-      if !tar_files.has_key? sig_file_name
-        say "WARNING!!! No sig found for #{file_name}"
-        next
-      end
-      
-      Gem::OpenPGP.verify(tar_files[file_name], tar_files[sig_file_name], options[:get_key])
-    end
+    output = Gem::OpenPGP.verify_gem gem, get_key=options[:get_key]
+    say output.join("\n")
   end
-
+  
 end
