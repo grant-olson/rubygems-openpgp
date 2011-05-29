@@ -1,7 +1,11 @@
 require 'open3'
 require 'tempfile'
 
+# A wrapper that shells out the real OpenPGP crypto work
+# to gpg.
 module Gem::OpenPGP
+
+  # Tests to see if gpg is installed and available.
   def self.openpgp_available?
     `gpg --version`
     $? == 0
@@ -9,6 +13,10 @@ module Gem::OpenPGP
     false
   end
 
+  # Given a string of data, generate and return a detached
+  # signature.  By defualt, this will use your primary secret key.
+  # This can be overridden by specifying a key_id for another 
+  # private key.
   def self.detach_sign data, key_id=nil
     key_flag = ""
     key_flag = "-u #{key_id}" if key_id
@@ -26,6 +34,11 @@ module Gem::OpenPGP
     sig
   end
 
+  # Given a string containing data, and a string containing
+  # a detached signature, verify the data.  If we can't verify
+  # then raise an exception.
+  #
+  # Optionally tell gpg to retrive the key if it's not provided
   def self.verify data, sig, get_key=false
     data_file = Tempfile.new("rubygems_data")
     data_file.binmode
