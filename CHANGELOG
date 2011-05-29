@@ -1,6 +1,11 @@
 1.1 - 2011-05-28
 ================
 
+* Validate that actual key id is in the form of 0xDEADBEEF to
+  eliminate potential gpg trickery.
+
+* Validate gpg install when running any OpenPGP operation.
+
 * Fix for windows verification, files must be opened in binary mode.
 
 1.0 - Initial Release - 2011-05-28
