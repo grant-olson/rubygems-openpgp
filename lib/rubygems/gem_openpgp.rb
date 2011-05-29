@@ -12,13 +12,18 @@ module Gem::OpenPGP
   # signature.  By defualt, this will use your primary secret key.
   # This can be overridden by specifying a key_id for another 
   # private key.
-  def self.detach_sign data, key_id=nil
+  def self.detach_sign data, key_id=nil, homedir=nil
     is_gpg_available
     is_key_valid key_id if key_id
-    
+    is_homedir_valid homedir if homedir
+
     key_flag = ""
     key_flag = "-u #{key_id}" if key_id
-    cmd = "gpg #{key_flag} --detach-sign --armor"
+
+    homedir_flag = ""
+    homedir_flag = "--homedir #{homedir}"
+
+    cmd = "gpg #{key_flag} #{homedir_flag} --detach-sign --armor"
     sig, err = run_gpg_command cmd, data
     sig
   end
@@ -28,8 +33,9 @@ module Gem::OpenPGP
   # then raise an exception.
   #
   # Optionally tell gpg to retrive the key if it's not provided
-  def self.verify data, sig, get_key=false
+  def self.verify data, sig, get_key=false, homedir=nil
     is_gpg_available
+    is_homedir_valid homedir
 
     data_file = create_tempfile data
     sig_file = create_tempfile sig
@@ -37,7 +43,10 @@ module Gem::OpenPGP
     get_key_params = "--keyserver pool.sks-keyservers.net --keyserver-options auto-key-retrieve"
     get_key_params = "" if get_key != true
 
-    cmd = "gpg #{get_key_params} --verify #{sig_file.path} #{data_file.path}"
+    homedir_flags = ""
+    homedir_flags = "--homedir #{homedir}" if homedir
+ 
+    cmd = "gpg #{get_key_params} #{homedir_flags} --verify #{sig_file.path} #{data_file.path}"
     res, err = run_gpg_command cmd
     [err, res]
   end
@@ -151,7 +160,13 @@ private
       raise Gem::OpenPGPException, err_msg
     end
   end
-
+ 
+  def self.is_homedir_valid homedir
+    if !File.exists? homedir
+      raise OpenPGPException, "Bad homedir #{homedir.inspect}"
+    end
+  end
+  
   def self.run_gpg_command cmd, data=nil
     exit_status = nil
     stdout, stderr = Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|

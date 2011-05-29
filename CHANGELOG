@@ -1,6 +1,8 @@
 1.2 - 2011-05-28
 ================
 
+* Basic smoke test.
+
 * Moved a bunch of code and refactored to make testing easier.
 
 * Provide a friendly error if gem isn't found when signing.
