@@ -3,11 +3,17 @@ require "rubygems/package"
 require 'rubygems/version_option'
 require "rubygems/gem_openpgp"
 
+# Verifies a gem signed by the 'sign' command.  Iterates through the
+# gem contents and verifies all embedded files, if possible.  Errors
+# out if the signature is bad or the key is unknown.
+#
+# Optionally takes "--get-key" which automatically retreives the key
+# from keyservers to make things easier for people unfamiliar with gpg.
 class Gem::Commands::VerifyCommand < Gem::Command
 
   include Gem::VersionOption
 
-  def initialize
+  def initialize # :nodoc:
     super 'verify', 'Verify gem with your OpenPGP key'
 
     add_version_option
@@ -18,19 +24,19 @@ class Gem::Commands::VerifyCommand < Gem::Command
 
   end
 
-  def arguments
+  def arguments # :nodoc:
     "GEMNAME        name of gem to verify"
   end
   
-  def defaults_str
+  def defaults_str # :nodoc:
     ""
   end
 
-  def usage
+  def usage # :nodoc:
     "blah blah"
   end
 
-  def execute
+  def execute # :nodoc:
     version = options[:version] || Gem::Requirement.default
     gem, specs = get_one_gem_name, []
 

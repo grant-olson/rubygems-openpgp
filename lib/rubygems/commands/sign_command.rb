@@ -4,11 +4,18 @@ require 'rubygems/version_option'
 require "rubygems/gem_openpgp"
 require 'fileutils'
 
+# Signs an existing gemfile by iterating the tar'ed up contents,
+# and signing any contents. creating a new file with original contents
+# and OpenPGP sigs.  The OpenPGP sigs are saved as .asc files so they 
+# won't conflict with X509 sigs.
+#
+# Optional param "--key KEY" allows you to use a different private
+# key than the GPG default.
 class Gem::Commands::SignCommand < Gem::Command
 
   include Gem::VersionOption
 
-  def initialize
+  def initialize # :nodoc:
     super 'sign', 'Sign existing gem with your OpenPGP key', :key => nil
 
     add_version_option
@@ -18,19 +25,19 @@ class Gem::Commands::SignCommand < Gem::Command
     end
   end
 
-  def arguments
+  def arguments # :nodoc:
     "GEMNAME        name of gem to sign"
   end
   
-  def defaults_str
+  def defaults_str # :nodoc:
     ""
   end
 
-  def usage
+  def usage # :nodoc:
     "blah blah"
   end
 
-  def execute
+  def execute  # :nodoc:
     version = options[:version] || Gem::Requirement.default
     gem, specs = get_one_gem_name, []
 
