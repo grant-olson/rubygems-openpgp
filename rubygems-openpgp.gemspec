@@ -14,7 +14,10 @@ Gem::Specification.new do |s|
 		   "lib/rubygems/commands/sbuild_command.rb",
                    "lib/rubygems/commands/sign_command.rb",
 		   "lib/rubygems/gem_openpgp.rb"]
-  s.test_files  = ["test/test_rubygems_openpgp.rb"]
+  s.test_files  = ["test/test_rubygems_openpgp.rb",
+                   "test/pablo_escobar_seckey.rb",
+		   "test/pablo_escobar_pubkey.rb",
+		   "test/unsigned_hola-0-0-0.gem"]
   s.homepage    = 'https://github.com/grant-olson/rubygems-openpgp'
   s.license     = "BSD 3 Clause"
   s.extra_rdoc_files = ['README.md']

@@ -1,3 +1,5 @@
+require 'rubygems'
+require 'rubygems/package'
 require 'open3'
 require 'tempfile'
 
@@ -58,7 +60,7 @@ module Gem::OpenPGP
   #
   # Optional param "key" allows you to use a different private
   # key than the GPG default.
-  def self.sign_gem gem, key=nil
+  def self.sign_gem gem, key=nil, homedir=nil
     output = []
 
     unsigned_gem = gem + ".unsigned"
@@ -91,7 +93,7 @@ module Gem::OpenPGP
       end
 
       signed_gem.add_file(f.full_name + ".asc", 0644) do |outfile|
-        outfile.write(Gem::OpenPGP.detach_sign(file_contents,key))
+        outfile.write(Gem::OpenPGP.detach_sign(file_contents,key,homedir))
       end
 
     end
@@ -104,7 +106,7 @@ module Gem::OpenPGP
     raise
   end
 
-  def self.verify_gem gem, get_key=false
+  def self.verify_gem gem, get_key=false, homedir=nil
     output =[]
 
     begin
@@ -130,7 +132,7 @@ module Gem::OpenPGP
       end
       
       begin
-        err, res = Gem::OpenPGP.verify(tar_files[file_name], tar_files[sig_file_name], get_key)
+        err, res = Gem::OpenPGP.verify(tar_files[file_name], tar_files[sig_file_name], get_key, homedir)
 
         output << add_color(err, :green)
         output << add_color(res, :green)
