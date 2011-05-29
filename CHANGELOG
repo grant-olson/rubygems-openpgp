@@ -1,0 +1,7 @@
+1.1 - 2011-05-28
+================
+
+* Fix for windows verification, files must be opened in binary mode.
+
+1.0 - Initial Release - 2011-05-28
+==================================
