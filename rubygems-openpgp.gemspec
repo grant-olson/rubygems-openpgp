@@ -7,12 +7,14 @@ Gem::Specification.new do |s|
   s.authors     = ["Grant Olson"]
   s.email       = 'kgo@grant-olson.net'
   s.files       = ["LICENSE",
+  		   "Rakefile",
                    "lib/rubygems_plugin.rb",
   		   "lib/rubygems/commands/verify_command.rb",
 		   "lib/rubygems/commands/vinstall_command.rb",
 		   "lib/rubygems/commands/sbuild_command.rb",
                    "lib/rubygems/commands/sign_command.rb",
 		   "lib/rubygems/gem_openpgp.rb"]
+  s.test_files  = ["test/test_rubygems_openpgp.rb"]
   s.homepage    = 'https://github.com/grant-olson/rubygems-openpgp'
   s.license     = "BSD 3 Clause"
   s.extra_rdoc_files = ['README.md']
