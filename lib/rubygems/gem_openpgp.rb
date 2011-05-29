@@ -28,10 +28,12 @@ module Gem::OpenPGP
 
   def self.verify data, sig, get_key=false
     data_file = Tempfile.new("rubygems_data")
+    data_file.binmode
     data_file.write(data)
     data_file.close
 
     sig_file = Tempfile.new("rubygems_sig")
+    sig_file.binmode
     sig_file.write(sig)
     sig_file.close
 
