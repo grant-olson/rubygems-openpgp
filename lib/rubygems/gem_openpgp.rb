@@ -1,23 +1,21 @@
 require 'open3'
 require 'tempfile'
 
+# Exception for this class
+class Gem::OpenPGPException < RuntimeError; end
+
 # A wrapper that shells out the real OpenPGP crypto work
 # to gpg.
 module Gem::OpenPGP
-
-  # Tests to see if gpg is installed and available.
-  def self.openpgp_available?
-    `gpg --version`
-    $? == 0
-  rescue
-    false
-  end
 
   # Given a string of data, generate and return a detached
   # signature.  By defualt, this will use your primary secret key.
   # This can be overridden by specifying a key_id for another 
   # private key.
   def self.detach_sign data, key_id=nil
+    is_gpg_available
+    is_key_valid key_id if key_id
+    
     key_flag = ""
     key_flag = "-u #{key_id}" if key_id
     cmd = "gpg #{key_flag} --detach-sign --armor"
@@ -40,6 +38,8 @@ module Gem::OpenPGP
   #
   # Optionally tell gpg to retrive the key if it's not provided
   def self.verify data, sig, get_key=false
+    is_gpg_available
+    
     data_file = Tempfile.new("rubygems_data")
     data_file.binmode
     data_file.write(data)
@@ -71,5 +71,24 @@ module Gem::OpenPGP
     puts "\033[37m #{res} \033[0m"
 
     raise "gpg encountered errors! #{err}" if exit_status != 0
+  end
+ 
+private
+
+  # Tests to see if gpg is installed and available.
+  def self.is_gpg_available
+    err_msg = "Unable to find a working gnupg installation.  Make sure gnupg is installed and you can call 'gpg --version' from a command prompt."
+    `gpg --version`
+    raise Gem::OpenPGPException, err_msg if $? != 0
+  rescue Errno::ENOENT => ex
+    raise Gem::OpenPGPException, err_msg if $? != 0
+  end
+
+  def self.is_key_valid key_id
+    valid = /^0x[A-Za-z0-9]{8,8}/.match(key_id)
+    if valid.nil?
+      err_msg = "Invalid key id.  Keys should be in form of 0xDEADBEEF"
+      raise Gem::OpenPGPException, err_msg
+    end
   end
 end
