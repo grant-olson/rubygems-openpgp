@@ -23,7 +23,7 @@ module Gem::OpenPGP
     key_flag = "-u #{key_id}" if key_id
 
     homedir_flag = ""
-    homedir_flag = "--homedir #{homedir}"
+    homedir_flag = "--homedir #{homedir}" if homedir
 
     cmd = "gpg #{key_flag} #{homedir_flag} --detach-sign --armor"
     sig, err = run_gpg_command cmd, data
@@ -37,7 +37,7 @@ module Gem::OpenPGP
   # Optionally tell gpg to retrive the key if it's not provided
   def self.verify data, sig, get_key=false, homedir=nil
     is_gpg_available
-    is_homedir_valid homedir
+    is_homedir_valid homedir if homedir
 
     data_file = create_tempfile data
     sig_file = create_tempfile sig
