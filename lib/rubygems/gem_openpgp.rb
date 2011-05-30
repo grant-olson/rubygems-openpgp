@@ -97,6 +97,11 @@ module Gem::OpenPGP
       end
 
     end
+    
+    signed_gem_file.close
+    unsigned_gem_file.close
+    File.delete unsigned_gem_file
+
     output
   rescue Exception => ex
     if unsigned_gem_file
@@ -141,6 +146,9 @@ module Gem::OpenPGP
         output << add_color(ex.message, :red)
       end
     end
+
+    file.close
+    
     output
   end
 
