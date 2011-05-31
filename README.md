@@ -44,9 +44,9 @@ key if a malicious user gains access.
 Signing example
 ---------------
 
-        gem build openpgp_signed_hola.gemspec
-        gem sign openpgp_signed_hola-0.0.0.gemspec
-        gem push opnepgp_signed_hola-0.0.0.gemspec
+    gem build openpgp_signed_hola.gemspec
+    gem sign openpgp_signed_hola-0.0.0.gemspec
+    gem push opnepgp_signed_hola-0.0.0.gemspec
 
 Verification Example
 --------------------
@@ -54,9 +54,9 @@ Verification Example
 A test gem **openpgp_signed_hola** is on rubygems.org.  To try out
 this extension:
 
-        gem fetch openpgp_signed_hola
-        gem verify openpgp_signed_hola-0.0.0.gem
-        gem install openpgp_signed_hola-0.0.0.gem
+    gem fetch openpgp_signed_hola
+    gem verify openpgp_signed_hola-0.0.0.gem
+    gem install openpgp_signed_hola-0.0.0.gem
 
 But That Just Failed!
 ---------------------
@@ -65,7 +65,7 @@ The first time you do this, the `gem verify` command will probably
 fail.  This is because you don't have my public key.  To automatically
 retrieve the key from the keyservers, run:
 
-        gem verify --get-key openpgp_signed_hola-0.0.0.gem
+    gem verify --get-key openpgp_signed_hola-0.0.0.gem
 
 The key will be automatically downloaded, and verification should now
 succeed.
@@ -75,8 +75,8 @@ on the information contained in the gem itself.  If a malicious user
 has tampered with the gem, they could easily provide a forged OpenPGP
 key as well.  This is why your output includes the following warning:
 
-        gpg: WARNING: This key is not certified with a trusted signature!
-        gpg:          There is no indication that the signature belongs to the owner.
+    gpg: WARNING: This key is not certified with a trusted signature!
+    gpg:          There is no indication that the signature belongs to the owner.
 
 You still don't know if this key *really* belongs to me.  If possible,
 you should verify the key signature through an out-band-channel.  This
@@ -88,13 +88,13 @@ personal website](http://www.grant-olson.net/openpgp-key).
 
 I've also included it right here in the README hosted on github:
 
-        pub   2048R/E3B5806F 2010-01-11 [expires: 2012-01-04]
-              Key fingerprint = A530 C31C D762 0D26 E2BA  C384 B6F6 FFD0 E3B5 806F
-        uid                  Grant T. Olson (Personal email) <kgo@grant-olson.net>
-        uid                  Grant T. Olson (pikimal) <grant@pikimal.com>
-        sub   2048R/6A8F7CF6 2010-01-11 [expires: 2012-01-04]
-        sub   2048R/A18A54D6 2010-03-01 [expires: 2012-01-04]
-        sub   2048R/D53982CE 2010-08-31 [expires: 2012-01-04]
+    pub   2048R/E3B5806F 2010-01-11 [expires: 2012-01-04]
+          Key fingerprint = A530 C31C D762 0D26 E2BA  C384 B6F6 FFD0 E3B5 806F
+    uid                  Grant T. Olson (Personal email) <kgo@grant-olson.net>
+    uid                  Grant T. Olson (pikimal) <grant@pikimal.com>
+    sub   2048R/6A8F7CF6 2010-01-11 [expires: 2012-01-04]
+    sub   2048R/A18A54D6 2010-03-01 [expires: 2012-01-04]
+    sub   2048R/D53982CE 2010-08-31 [expires: 2012-01-04]
 
 Even better would be obtaining the key fingerprint from me personally,
 but this can often be impractical.
@@ -107,7 +107,7 @@ compromise rubygems, github, and my personal website.
 If the fingerprints DO NOT match, you probably want to delete the
 invalid key from your keyring:
 
-        gpg --delete-key <<KEY_ID>>
+    gpg --delete-key <<KEY_ID>>
 
 If you feel confident that the key is valid based on your external
 fingerprint checks, you can make a signature on your gpg keyring.  I
@@ -116,7 +116,7 @@ fingerprint in person.  This means that you feel confident that the
 key is valid, but you're not making any representations to the outside
 world.  To do so, run:
 
-        gpg --lsign <<KEY_ID>>
+    gpg --lsign <<KEY_ID>>
 
 After this, you will no longer receive WARNINGs about untrusted
 sources for any gems signed by this key/author.
@@ -133,9 +133,9 @@ this creates a chicken-and-egg problem the first time you download the
 release.  To verify your initial download, save the following
 signature and manually verify by running:
 
-        gem fetch rubygems-openpgp
-        gpg --verify saved_sig.asc rubygems-openpgp-0.2.1.gem
-        gem install rubygems-openpgp-0.2.1.gem
+    gem fetch rubygems-openpgp
+    gpg --verify saved_sig.asc rubygems-openpgp-0.2.1.gem
+    gem install rubygems-openpgp-0.2.1.gem
 
 Signature for release 0.2.1:
 
