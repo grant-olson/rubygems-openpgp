@@ -1,4 +1,9 @@
-0.2.0 - 2011-05-28
+0.2.1 - 2011-05-30
+==================
+
+* Binary release at rubygems wasn't signed.
+
+0.2.0 - 2011-05-30
 ==================
 
 * Basic smoke test.
