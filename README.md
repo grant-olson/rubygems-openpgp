@@ -45,8 +45,8 @@ Signing example
 ---------------
 
     gem build openpgp_signed_hola.gemspec
-    gem sign openpgp_signed_hola-0.0.0.gemspec
-    gem push opnepgp_signed_hola-0.0.0.gemspec
+    gem sign openpgp_signed_hola-0.0.0.gem
+    gem push opnepgp_signed_hola-0.0.0.gem
 
 Verification Example
 --------------------
