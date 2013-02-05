@@ -1,7 +1,7 @@
-require "rubygems/command"
-require "rubygems/package"
+require 'rubygems/command'
+require 'rubygems/package'
 require 'rubygems/version_option'
-require "rubygems/gem_openpgp"
+require 'rubygems/gem_openpgp'
 require 'fileutils'
 
 # CLI interface to the internal signing code:
@@ -10,15 +10,23 @@ require 'fileutils'
 #
 #   gem sign -key 0xDEADBEEF gemname-0.0.0.gem
 class Gem::Commands::SignCommand < Gem::Command
-
   include Gem::VersionOption
 
   def initialize # :nodoc:
-    super 'sign', 'Signs an existing gem with your OpenPGP key.  This allows third parties to verify the key later via the \'gem verify\' command.', :key => nil
+    super(
+      'sign',
+      'Signs an existing gem with your OpenPGP key.  ' \
+        'This allows third parties to verify the key later via the ' \
+        '"gem verify" command.',
+      :key => nil
+    )
 
     add_version_option
 
-    add_option('--key KEY', "Specify key id if you don't want to use your default gpg key") do |key, options|
+    add_option(
+      '--key KEY',
+      "Specify key id if you don't want to use your default gpg key"
+    ) do |key, options|
       options[:key] = key
     end
   end
@@ -26,7 +34,7 @@ class Gem::Commands::SignCommand < Gem::Command
   def arguments # :nodoc:
     "GEMNAME        name of gem to sign"
   end
-  
+
   def defaults_str # :nodoc:
     ""
   end
@@ -36,10 +44,8 @@ class Gem::Commands::SignCommand < Gem::Command
   end
 
   def execute  # :nodoc:
-    version = options[:version] || Gem::Requirement.default
-    gem, specs = get_one_gem_name, []
-    output = Gem::OpenPGP.sign_gem gem, key=options[:key]
-    say output.join("\n")
+    output = Gem::OpenPGP.sign_gem(get_one_gem_name, options[:key])
+
+    say output
   end
-  
 end
