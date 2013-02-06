@@ -10,8 +10,6 @@ Gem::Specification.new do |s|
   		   "Rakefile",
                    "lib/rubygems_plugin.rb",
   		   "lib/rubygems/commands/verify_command.rb",
-		   "lib/rubygems/commands/vinstall_command.rb",
-		   "lib/rubygems/commands/sbuild_command.rb",
                    "lib/rubygems/commands/sign_command.rb",
 		   "lib/rubygems/gem_openpgp.rb"]
   s.test_files  = ["test/test_rubygems-openpgp.rb",
