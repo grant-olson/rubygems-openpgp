@@ -132,7 +132,7 @@ module Gem::OpenPGP
 
       sig_file_name = file_name + ".asc"
       if !tar_files.has_key? sig_file_name
-        output << "WARNING!!! No sig found for #{file_name}"
+        output << add_color("WARNING!!! No sig found for #{file_name}", :red)
         next
       end
       
@@ -209,5 +209,9 @@ private
     #TODO - NO-OP on windows
     "\033[#{color_code}m#{s}\033[0m"
   end
-  
+
+  def self.options
+    @options ||= {}
+    @options
+  end
 end
