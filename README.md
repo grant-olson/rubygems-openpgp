@@ -1,10 +1,28 @@
 rubygems-openpgp
 ================
 
+Software Assurance
+------------------
+
+To assure the validity of any software package, you need to:
+
+* Verify that the package has not been corrupted or maliciously
+  tampered with by verifying the file's checksum.
+
+* Verify that the checksum has not been tampered with by validating a
+  digital signature of that checksum.
+
+* Verify that the digital signature was produced by the package's
+  publisher by authenticating the public key that was used to generate
+  the digital signature.
+
+If you can't do this, you can't verify the integrity of the package.
+
 This gem allows cryptographic signing of ruby gems with OpenPGP
-instead of the current method involving OpenSSL.  I think OpenPGP is a
-much better choice than X509 certificates for verifying open source
-components.
+instead of the current built-in signing method involving X.509.
+
+I think OpenPGP is a much better choice than X.509 certificates for
+verifying open source components.
 
 My proposal as to why we should do so, and how to add certification
 infrastructure into place, follows.  Note this project doesn't attempt
@@ -39,103 +57,27 @@ this extension:
 But That Just Failed!
 ---------------------
 
-The first time you do this, the `gem verify` command will probably
-fail.  This is because you don't have my public key.  To automatically
-retrieve the key from the keyservers, run:
+You probably don't have my public key yet.  You need my public key to
+verify the digital signature.  You also want to perform some
+authentication of that public key.
 
-    gem verify --get-key openpgp_signed_hola-0.0.0.gem
-
-The key will be automatically downloaded, and verification should now
-succeed.
-
-There are security implications here.  You've downloaded the key based
-on the information contained in the gem itself.  If a malicious user
-has tampered with the gem, they could easily provide a forged OpenPGP
-key as well.  This is why your output includes the following warning:
-
-    gpg: WARNING: This key is not certified with a trusted signature!
-    gpg:          There is no indication that the signature belongs to the owner.
-
-You still don't know if this key *really* belongs to me.  If possible,
-you should verify the key signature through an out-band-channel.  This
-may be the project page, a release email from the author, or some
-other means.
-
-For example, you can obtain the fingerprint on my key from [my
-personal website](http://www.grant-olson.net/openpgp-key).
-
-I've also included it right here in the README hosted on github:
-
-    pub   2048R/E3B5806F 2010-01-11 [expires: 2012-01-04]
-          Key fingerprint = A530 C31C D762 0D26 E2BA  C384 B6F6 FFD0 E3B5 806F
-    uid                  Grant T. Olson (Personal email) <kgo@grant-olson.net>
-    uid                  Grant T. Olson (pikimal) <grant@pikimal.com>
-    sub   2048R/6A8F7CF6 2010-01-11 [expires: 2012-01-04]
-    sub   2048R/A18A54D6 2010-03-01 [expires: 2012-01-04]
-    sub   2048R/D53982CE 2010-08-31 [expires: 2012-01-04]
-
-Even better would be obtaining the key fingerprint from me personally,
-but this can often be impractical.
-
-In any case, you should verify the key fingerprint listed in the
-message from one of these alternate sources.  If they match, the
-signature is (hopefully) valid, assuming an attacker hasn't managed to
-compromise rubygems, github, and my personal website.
-
-If the fingerprints DO NOT match, you probably want to delete the
-invalid key from your keyring:
-
-    gpg --delete-key <<KEY_ID>>
-
-If you feel confident that the key is valid based on your external
-fingerprint checks, you can make a signature on your gpg keyring.  I
-would advise making a local signature unless you've validated the
-fingerprint in person.  This means that you feel confident that the
-key is valid, but you're not making any representations to the outside
-world.  To do so, run:
-
-    gpg --lsign <<KEY_ID>>
-
-After this, you will no longer receive WARNINGs about untrusted
-sources for any gems signed by this key/author.
-
-Unfortunately, authentication is a hard problem.  See my proposal
-below for a potential solution to provide reasonable assurances about
-key validity without having to manually confirm everything.
+[Notes on retrieving and authenticating public keys.](./doc/retrieving-and-authenticating-keys.md)
 
 Verifying your initial install
 ------------------------------
 
-All releases of rubygems-openpgp should be signed by my key.  However,
-this creates a chicken-and-egg problem the first time you download the
-release.  To verify your initial download, save the following
-signature and manually verify by running:
+All versions of this gem should be signed.  But the first time you
+install the package you run into a bit of a chicken-and-the-egg
+problem.  You can't verify the package until you've installed a copy.
+But if that copy isn't verified, if could already be compromised.
 
-    gem fetch rubygems-openpgp
-    gpg --verify saved_sig.asc rubygems-openpgp-0.2.1.gem
-    gem install rubygems-openpgp-0.2.1.gem
+But don't worry.  You can use a stand-alone signature to verify your
+initial install.  Since the stand-alone signature is on github, and
+the software package is on rubygems.org, a malicious user would need
+to compromise both sites to publish a compromised gem and
+compromised/forged digital signature.
 
-Signature for release 0.2.1:
-
-    -----BEGIN PGP SIGNATURE-----
-    Version: GnuPG v1.4.10 (GNU/Linux)
-    
-    iQEcBAABAwAGBQJN5DZLAAoJEP5F5V2hilTWRT0H/0pOYJrQXeIWZHd1O/zu8Fk4
-    dYlHy4Dpm3BrskJaq0EQm81BLVeHGawTPYIUr/tI3Wnmfy+pSBxpAgA7OZMkHnu2
-    sHzLqU/FixMmYPMBkfZ0bDDsSgr1fAOINRCy6wlpQvlpnuMiybB7+UDboQEfaLLa
-    c8kvCenhEWiI6MO3lyye7PKfgNXNbML5vGJ/WcI3HIQpAgJ8+ItB16tLnw22JlPe
-    qv+IS9SlHE/0vY6HdAB3wnfuQpLXM5JZlpcErFR37dCGrvlcgetjWN84pEtm6jIO
-    Jsk6YyxWu5uxE84UEc8HWzbFrb5sVstYLKW+vwqIVV76spK5EvAaKCOrMnzP/Qg=
-    =Lltd
-    -----END PGP SIGNATURE-----
-
-After you've done this, you should be able to verify future releases
-with the standard `gem verify ...`
-
-In addition, all releases are tagged in git with gpg signatures, if
-you need to verify a source download.
-
-TODO: git gpg verify commands...
+[Notes on verifying the initial install.](./doc/verifying-the-initial-install.md)
 
 Motivation
 ----------

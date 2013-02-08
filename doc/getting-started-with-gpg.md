@@ -1,5 +1,5 @@
 Getting Started with gpg
-------------------------
+========================
 
 If you're unfamiliar with gpg, please read the [GNU Privacy
 Handbook](http://www.gnupg.org/gph/en/manual.html) .  If you're too
