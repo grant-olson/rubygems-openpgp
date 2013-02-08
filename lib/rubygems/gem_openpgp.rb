@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'rubygems/package'
+require 'shellwords'
 require 'open3'
 require 'tempfile'
 
@@ -9,6 +10,7 @@ class Gem::OpenPGPException < RuntimeError; end
 # A wrapper that shells out the real OpenPGP crypto work
 # to gpg.
 module Gem::OpenPGP
+  extend Shellwords
 
   # Given a string of data, generate and return a detached
   # signature.  By defualt, this will use your primary secret key.
@@ -20,10 +22,10 @@ module Gem::OpenPGP
     is_homedir_valid homedir if homedir
 
     key_flag = ""
-    key_flag = "-u #{key_id}" if key_id
+    key_flag = "-u #{shellescape(key_id)}" if key_id
 
     homedir_flag = ""
-    homedir_flag = "--homedir #{homedir}" if homedir
+    homedir_flag = "--homedir #{shellescape(homedir)}" if homedir
 
     cmd = "gpg #{key_flag} #{homedir_flag} --detach-sign --armor"
     sig, err = run_gpg_command cmd, data
