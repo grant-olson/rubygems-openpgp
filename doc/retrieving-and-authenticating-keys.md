@@ -65,7 +65,5 @@ world.  To do so, run:
 After this, you will no longer receive WARNINGs about untrusted
 sources for any gems signed by this key/author.
 
-Unfortunately, authentication is a hard problem.  See my proposal
-below for a potential solution to provide reasonable assurances about
-key validity without having to manually confirm everything.
+Unfortunately, authentication is a hard problem.
 
