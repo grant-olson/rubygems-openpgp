@@ -77,7 +77,7 @@ the software package is on rubygems.org, a malicious user would need
 to compromise both sites to publish a compromised gem and
 compromised/forged digital signature.
 
-[Notes on verifying the initial install.](./doc/verifying-the-initial-install.md)
+[Notes on verifying the initial install.](./doc/verifying-initial-install.md)
 
 Motivation
 ----------
