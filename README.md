@@ -22,8 +22,9 @@ This gem allows cryptographic signing of ruby gems with OpenPGP
 instead of the current built-in signing method involving X.509.
 
 [Read more about why we should use OpenPGP.](./doc/motivation.md)
-[Slides from from my lightning talk](http://bit.ly/TUtT3S) at
-[Pittsburgh.rb](http://pghrb.heroku.com/).
+Here's the [slides](http://bit.ly/TUtT3S) and
+[video](http://vimeo.com/album/2255908/video/59297058) from a
+lightning talk I did at [Pittsburgh.rb](http://pghrb.heroku.com/).
  
 Prerequisites
 -------------
