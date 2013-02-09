@@ -47,10 +47,7 @@ Verification Example
 A test gem **openpgp_signed_hola** is on rubygems.org.  To try out
 this extension:
 
-    gem install openpgp_signed_hola --verify
-
-or for a gem obtained manually:
-
+    gem fetch openpgp_signed_hola
     gem verify openpgp_signed_hola-0.0.0.gem
     gem install openpgp_signed_hola-0.0.0.gem
 
