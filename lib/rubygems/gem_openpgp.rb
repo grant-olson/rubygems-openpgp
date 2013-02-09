@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'rubygems/package'
+require 'rubygems/user_interaction'
 require 'shellwords'
 require 'open3'
 require 'tempfile'
@@ -11,6 +12,7 @@ class Gem::OpenPGPException < RuntimeError; end
 # to gpg.
 module Gem::OpenPGP
   extend Shellwords
+  extend Gem::UserInteraction
 
   # Given a string of data, generate and return a detached
   # signature.  By defualt, this will use your primary secret key.
@@ -63,8 +65,6 @@ module Gem::OpenPGP
   # Optional param "key" allows you to use a different private
   # key than the GPG default.
   def self.sign_gem gem, key=nil, homedir=nil
-    output = []
-
     unsigned_gem = gem + ".unsigned"
 
     begin
@@ -79,14 +79,14 @@ module Gem::OpenPGP
     signed_gem = Gem::Package::TarWriter.new(signed_gem_file)
 
     Gem::Package::TarReader.new(unsigned_gem_file).each do |f|
-      output << f.full_name.inspect
+      say(f.full_name.inspect)
       
       if f.full_name[-4..-1] == ".asc"
-        output << "Skipping old signature file #{f.full_name}"
+        say("Skipping old signature file #{f.full_name}")
         next
       end
       
-      output << "Signing #{f.full_name.inspect}..."
+      say("Signing #{f.full_name.inspect}...")
 
       file_contents = f.read()
 
@@ -104,7 +104,6 @@ module Gem::OpenPGP
     unsigned_gem_file.close
     File.delete unsigned_gem_file
 
-    output
   rescue Exception => ex
     if unsigned_gem_file
       FileUtils.mv unsigned_gem_file, gem
@@ -114,7 +113,6 @@ module Gem::OpenPGP
   end
 
   def self.verify_gem gem, get_key=false, homedir=nil
-    output =[]
 
     begin
       file = File.open(gem,"r")
@@ -130,28 +128,26 @@ module Gem::OpenPGP
     
     tar_files.keys.each do |file_name|
       next if file_name[-4..-1] == ".asc"
-      output << "Verifying #{file_name}..."
+      say "Verifying #{file_name}..."
 
       sig_file_name = file_name + ".asc"
       if !tar_files.has_key? sig_file_name
-        output << add_color("WARNING!!! No sig found for #{file_name}", :red)
-        next
+        say add_color("WARNING!!! No sig found for #{file_name}", :red)
       end
       
       begin
         err, res = Gem::OpenPGP.verify(tar_files[file_name], tar_files[sig_file_name], get_key, homedir)
 
-        output << add_color(err, :green)
-        output << add_color(res, :green)
+        say add_color(err, :green)
+        say add_color(res, :green)
       rescue Gem::OpenPGPException => ex
         color_code = "31"
-        output << add_color(ex.message, :red)
+        say add_color(ex.message, :red)
       end
     end
 
     file.close
-    
-    output
+
   end
 
 private

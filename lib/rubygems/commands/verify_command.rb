@@ -39,8 +39,7 @@ class Gem::Commands::VerifyCommand < Gem::Command
   def execute # :nodoc:
     version = options[:version] || Gem::Requirement.default
     gem, specs = get_one_gem_name, []
-    output = Gem::OpenPGP.verify_gem gem, get_key=options[:get_key]
-    say output.join("\n")
+    Gem::OpenPGP.verify_gem gem, get_key=options[:get_key]
   end
   
 end

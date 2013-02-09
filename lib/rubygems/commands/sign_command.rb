@@ -38,8 +38,7 @@ class Gem::Commands::SignCommand < Gem::Command
   def execute  # :nodoc:
     version = options[:version] || Gem::Requirement.default
     gem, specs = get_one_gem_name, []
-    output = Gem::OpenPGP.sign_gem gem, key=options[:key]
-    say output.join("\n")
+    Gem::OpenPGP.sign_gem gem, key=options[:key]
   end
   
 end
