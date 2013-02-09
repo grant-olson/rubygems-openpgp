@@ -1,5 +1,6 @@
 require 'rubygems/command'
 require 'rubygems/package'
+require 'rubygems/user_interaction'
 require 'rubygems/version_option'
 require 'rubygems/gem_openpgp'
 
@@ -12,6 +13,7 @@ require 'rubygems/gem_openpgp'
 class Gem::Commands::VerifyCommand < Gem::Command
 
   include Gem::VersionOption
+  include Gem::UserInteraction
 
   def initialize # :nodoc:
     super 'verify', 'Verifies a local gem that has been signed via OpenPGP.  This helps to ensure the gem has not been tampered with in transit.'
@@ -40,6 +42,9 @@ class Gem::Commands::VerifyCommand < Gem::Command
     version = options[:version] || Gem::Requirement.default
     gem, specs = get_one_gem_name, []
     Gem::OpenPGP.verify_gem gem, get_key=options[:get_key]
+  rescue Gem::OpenPGPException => ex
+    alert_error(ex.message)
+    terminate_interaction(1)
   end
   
 end

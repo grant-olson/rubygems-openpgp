@@ -20,8 +20,9 @@ class RubygemsPluginTest < Test::Unit::TestCase
   
   def test_gem_sign_and_verify
     in_tmp_gpg_homedir do |gpg_home|
-      res = Gem::OpenPGP.verify_gem UNSIGNED_GEM, false, gpg_home
-      assert_match(/WARNING!!!/, res.join("\n"))
+      assert_raise Gem::OpenPGPException do
+        Gem::OpenPGP.verify_gem UNSIGNED_GEM, false, gpg_home
+      end
 
       FileUtils.cp UNSIGNED_GEM, SIGNED_GEM
     
@@ -31,7 +32,7 @@ class RubygemsPluginTest < Test::Unit::TestCase
       end
     end
   ensure
-    File.delete SIGNED_GEM
+    File.delete(SIGNED_GEM) if File.exists?(SIGNED_GEM)
   end
   
   def test_basic_sign_and_verify

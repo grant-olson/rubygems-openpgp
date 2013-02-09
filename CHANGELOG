@@ -1,3 +1,5 @@
+* 'gem install --verify' will now verify gems or abort install.
+
 * Escape potentially unsafe user input.  (Patch via postmodern)
 
 0.2.1 - 2011-05-30

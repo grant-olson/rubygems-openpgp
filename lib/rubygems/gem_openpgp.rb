@@ -133,6 +133,7 @@ module Gem::OpenPGP
       sig_file_name = file_name + ".asc"
       if !tar_files.has_key? sig_file_name
         say add_color("WARNING!!! No sig found for #{file_name}", :red)
+        raise Gem::OpenPGPException, "Can't verify without sig, aborting!!!"
       end
       
       begin
@@ -143,11 +144,12 @@ module Gem::OpenPGP
       rescue Gem::OpenPGPException => ex
         color_code = "31"
         say add_color(ex.message, :red)
+        raise
       end
     end
 
-    file.close
-
+  ensure
+    file.close unless file.nil?
   end
 
 private

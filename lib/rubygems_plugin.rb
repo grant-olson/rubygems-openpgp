@@ -19,9 +19,11 @@ end
 Gem.pre_install do |installer|
   begin
     if Gem::OpenPGP.options[:verify]
-      output = Gem::OpenPGP.verify_gem(installer.gem,
-                                       Gem::OpenPGP.options[:get_key])
-      installer.say output.join("\n")
+      Gem::OpenPGP.verify_gem(installer.gem,
+                              Gem::OpenPGP.options[:get_key])
     end
+  rescue Gem::OpenPGPException => ex
+    installer.alert_error(ex.message)
+    installer.terminate_interaction(1)
   end
 end
