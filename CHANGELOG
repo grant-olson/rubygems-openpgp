@@ -1,5 +1,5 @@
 * --no-verify to explicitly override --verify.  Useful if you specify
-    --verify in ~/.gem
+    --verify in ~/.gemrc
 
 0.3.0 - 2013-02-10
 ==================
