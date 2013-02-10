@@ -1,3 +1,6 @@
+0.3.0 - 2013-02-10
+==================
+
 * `gem build --sign [--key 0xDEADBEEF]` will now sign gems on build.
 
 * 'gem install --verify' will now verify gems or abort install.
