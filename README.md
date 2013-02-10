@@ -38,8 +38,7 @@ An OpenPGP private key is required to sign gems, but not to verify.
 Signing example
 ---------------
 
-    gem build openpgp_signed_hola.gemspec
-    gem sign openpgp_signed_hola-0.0.0.gem
+    gem build openpgp_signed_hola.gemspec --sign
     gem push opnepgp_signed_hola-0.0.0.gem
 
 Verification Example
@@ -48,9 +47,7 @@ Verification Example
 A test gem **openpgp_signed_hola** is on rubygems.org.  To try out
 this extension:
 
-    gem fetch openpgp_signed_hola
-    gem verify openpgp_signed_hola-0.0.0.gem
-    gem install openpgp_signed_hola-0.0.0.gem
+    gem install openpgp_signed_hola-0.0.0.gem --verify
 
 But That Just Failed!
 ---------------------
