@@ -3,7 +3,7 @@ Gem::Specification.new do |s|
   s.version     = '0.4.0.pre'
   s.date        = '2013-02-10'
   s.summary     = "Sign gems via OpenPGP"
-  s.description = "Digitally sign gems via OpenPGP instead of OpenSSL"
+  s.description = "Digitally sign gems via OpenPGP."
   s.authors     = ["Grant Olson"]
   s.email       = 'kgo@grant-olson.net'
   s.files       = ["LICENSE",
