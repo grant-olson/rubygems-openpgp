@@ -1,0 +1,23 @@
+GIT
+  remote: ../gpg_status_parser/
+  revision: 1f563662cecf2f688c99aac5638dc3e0ca9a66c1
+  specs:
+    gpg_status_parser (0.3.0.pre)
+
+GIT
+  remote: ./
+  revision: 59bfbcd848c6df87ab4b9690aa3354dfa973b518
+  specs:
+    rubygems-openpgp (0.4.0.pre)
+      gpg_status_parser (>= 0.3.0.pre)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  gpg_status_parser!
+  rubygems-openpgp!

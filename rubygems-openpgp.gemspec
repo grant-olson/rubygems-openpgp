@@ -19,4 +19,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/grant-olson/rubygems-openpgp'
   s.license     = "BSD 3 Clause"
   s.extra_rdoc_files = ['README.md']
+
+  s.add_dependency("gpg_status_parser")
+
 end
