@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'rubygems-openpgp'
-  s.version     = '0.4.0.pre'
-  s.date        = '2013-02-10'
+  s.version     = '0.4.0'
+  s.date        = '2013-02-23'
   s.summary     = "Sign gems via OpenPGP"
   s.description = "Digitally sign gems via OpenPGP."
   s.authors     = ["Grant Olson"]
@@ -20,6 +20,6 @@ Gem::Specification.new do |s|
   s.license     = "BSD 3 Clause"
   s.extra_rdoc_files = ['README.md']
 
-  s.add_dependency("gpg_status_parser")
+  s.add_dependency("gpg_status_parser",">= 0.3.0")
 
 end
