@@ -42,7 +42,8 @@ module Gem::OpenPGP
       case message.status
       when :GOODSIG, :BADSIG, :ERRSIG
         status_info[:good_or_bad] = message.status
-        status_info[:uid] = message.args[:username]
+        status_info[:uid] = (message.args[:username] || "").strip
+        
       when :SIG_ID
       when :VALIDSIG, :EXPSIG, :BADSIG
         status_info[:sig_status] = message.status
