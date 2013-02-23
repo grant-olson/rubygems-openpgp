@@ -60,7 +60,7 @@ module Gem::OpenPGP
 
   # Print info about the sig, check that we like it, and possibly abort
   def self.verify_check_sig status_info
-    sig_msg = "Signature from user #{status_info[:uid]} key #{status_info[:primary_key]} is #{status_info[:good_or_bad]}, #{status_info[:sig_status]} and #{status_info[:trust_status]}"
+    sig_msg = "Signature for #{status_info[:file_name]} from user #{status_info[:uid]} key #{status_info[:primary_key]} is #{status_info[:good_or_bad]}, #{status_info[:sig_status]} and #{status_info[:trust_status]}"
     if status_info[:trust_status] == :TRUST_NEVER
       say add_color(sig_msg, :red)
       raise Gem::OpenPGPException, "Never Trusted.  Won't install."
@@ -79,7 +79,7 @@ module Gem::OpenPGP
   # then raise an exception.
   #
   # Optionally tell gpg to retrive the key if it's not provided
-  def self.verify data, sig, get_key=false, homedir=nil
+  def self.verify file_name, data, sig, get_key=false, homedir=nil
     is_gpg_available
     is_homedir_valid homedir if homedir
 
@@ -94,7 +94,7 @@ module Gem::OpenPGP
 
     gpg_args = "#{get_key_params} #{homedir_flags} --verify #{sig_file.path} #{data_file.path}"
     
-    status_info = {}
+    status_info = {:file_name => file_name}
     gpg_results = run_gpg(gpg_args) { |message| verify_extract_status_info(message, status_info) }
     
     if status_info[:failure]
@@ -180,7 +180,6 @@ module Gem::OpenPGP
     
     tar_files.keys.each do |file_name|
       next if file_name[-4..-1] == ".asc"
-      say "Verifying #{file_name}..."
 
       sig_file_name = file_name + ".asc"
       if !tar_files.has_key? sig_file_name
@@ -189,7 +188,7 @@ module Gem::OpenPGP
       end
       
       begin
-        err, res = Gem::OpenPGP.verify(tar_files[file_name], tar_files[sig_file_name], get_key, homedir)
+        err, res = Gem::OpenPGP.verify(file_name, tar_files[file_name], tar_files[sig_file_name], get_key, homedir)
 
       rescue Gem::OpenPGPException => ex
         color_code = "31"
