@@ -1,3 +1,6 @@
+* We now use gpg_status_parser instead of just dealing with gpg
+  stdout, etc.
+
 * --no-verify to explicitly override --verify.  Useful if you specify
     --verify in ~/.gemrc
 

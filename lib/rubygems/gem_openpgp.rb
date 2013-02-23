@@ -4,6 +4,7 @@ require 'rubygems/user_interaction'
 require 'shellwords'
 require 'open3'
 require 'tempfile'
+require 'gpg_status_parser'
 
 # Exception for this class
 class Gem::OpenPGPException < RuntimeError; end
@@ -29,10 +30,12 @@ module Gem::OpenPGP
     homedir_flag = ""
     homedir_flag = "--homedir #{shellescape(homedir)}" if homedir
 
-    cmd = "gpg #{key_flag} #{homedir_flag} --detach-sign --armor"
-    sig, err = run_gpg_command cmd, data
+    gpg_args = "#{key_flag} #{homedir_flag} --detach-sign --armor"
+    sig, err = run_gpg(gpg_args, data) 
     sig
   end
+
+  
 
   # Given a string containing data, and a string containing
   # a detached signature, verify the data.  If we can't verify
@@ -52,8 +55,41 @@ module Gem::OpenPGP
     homedir_flags = ""
     homedir_flags = "--homedir #{homedir}" if homedir
  
-    cmd = "gpg #{get_key_params} #{homedir_flags} --verify #{sig_file.path} #{data_file.path}"
-    res, err = run_gpg_command cmd
+    gpg_args = "#{get_key_params} #{homedir_flags} --verify #{sig_file.path} #{data_file.path}"
+
+    good_or_bad = nil
+    sig_status = nil
+    trust_status = nil
+    primary_key = nil
+    uid = nil
+    failure = nil
+    
+    res, err = run_gpg(gpg_args) do |message|
+      case message.status
+      when :GOODSIG, :BADSIG, :ERRSIG
+        good_or_bad = message.status
+        uid = message.args[:username]
+      when :SIG_ID
+      when :VALIDSIG, :EXPSIG, :BADSIG
+        sig_status = message.status
+        primary_key = "0x#{message.args[:primary_key_fpr][-9..-1]}"
+      when :TRUST_UNDEFINED, :TRUST_NEVER, :TRUST_MARGINAL, :TRUST_FULLY, :TRUST_ULTIMATE
+        trust_status = message.status
+      when :NO_PUBKEY
+        failure = "You don't have the public key.  Use --get-key to automagically retrieve from keyservers"
+      else
+        puts "unknown message status #{message.inspect}"
+      end
+    end
+    
+    puts failure.inspect
+
+    if failure
+      say add_color(failure, :red)
+    else
+      say add_color("Signature from user #{uid} key #{primary_key} is #{good_or_bad}, #{sig_status} and #{trust_status}" , :green)
+    end
+
     [err, res]
   end
 
@@ -139,8 +175,6 @@ module Gem::OpenPGP
       begin
         err, res = Gem::OpenPGP.verify(tar_files[file_name], tar_files[sig_file_name], get_key, homedir)
 
-        say add_color(err, :green)
-        say add_color(res, :green)
       rescue Gem::OpenPGPException => ex
         color_code = "31"
         say add_color(ex.message, :red)
@@ -177,18 +211,25 @@ private
     end
   end
   
-  def self.run_gpg_command cmd, data=nil
+  def self.run_gpg args, data=nil, &block
     exit_status = nil
-    stdout, stderr = Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
+    status_file = Tempfile.new("status")
+
+    full_gpg_command = "gpg --status-file #{status_file.path} #{args}"
+    stdout, stderr = Open3.popen3(full_gpg_command) do |stdin, stdout, stderr, wait_thr|
       stdin.write data if data
       stdin.close
       exit_status = wait_thr.value
+      GPGStatusParser.parse(status_file, &block)
       out = stdout.read()
       err = stderr.read()
       raise Gem::OpenPGPException, "#{err}" if exit_status != 0
       [out,err]
     end
     [stdout, stderr]
+  ensure
+    status_file.close
+    status_file.unlink
   end
 
   def self.create_tempfile data
