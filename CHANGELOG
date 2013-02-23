@@ -1,3 +1,6 @@
+0.4.0 - 2013-02-23
+==================
+
 * Added --trust and --no-trust options which enforce gnupg trust so we
   don't install valid but untrusted gems.
 
