@@ -44,6 +44,12 @@ Signing example
 Verification Example
 --------------------
 
+A detailed walkthrough of verifiction is available at
+[The Complete Guide to Verifying Gems with
+rubygems-openpgp](http://www.rubygems-openpgp-ca.org/blog/the-complete-guide-to-verifying-gems-with-rubygems-openpgp.html)
+
+TLDR?
+
 A test gem **openpgp_signed_hola** is on rubygems.org.  To try out
 this extension:
 
