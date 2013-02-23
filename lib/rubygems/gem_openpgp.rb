@@ -54,6 +54,8 @@ module Gem::OpenPGP
         status_info[:failure] = "You don't have the public key.  Use --get-key to automagically retrieve from keyservers"
       when :IMPORTED, :IMPORT_OK, :IMPORT_RES
         #silently_ignore
+      when :KEYEXPIRED, :SIGEXPIRED
+        # recalculating trust db, ignore.
       else
         puts "unexpected message: #{message.status} #{message.args.inspect}"
       end
