@@ -77,6 +77,8 @@ module Gem::OpenPGP
         trust_status = message.status
       when :NO_PUBKEY
         failure = "You don't have the public key.  Use --get-key to automagically retrieve from keyservers"
+
+      when :IMPORTED, :IMPORT_OK, :IMPORT_RES
       else
         puts "unknown message status #{message.inspect}"
       end
