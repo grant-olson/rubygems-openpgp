@@ -39,8 +39,19 @@ i.add_option("--verify",
 end
 
 i.add_option("--no-verify",
-             "Don't verify a gem, even if --verify has previously ben specified") do |value, options|
+             "Don't verify a gem, even if --verify has previously been specified") do |value, options|
   Gem::OpenPGP.options[:no_verify] = true
+end
+
+i = Gem::CommandManager.instance[:install]
+i.add_option("--trust",
+             'Enforce gnupg trust settings.  Only install if trusted.') do |value, options|
+  Gem::OpenPGP.options[:trust] = true
+end
+
+i.add_option("--no-trust",
+             "Ignoure gnupg trust settings,  even if --trust has previously been specified") do |value, options|
+  Gem::OpenPGP.options[:no_trust] = true
 end
 
 i.add_option('--get-key', "If the key is not available, download it from a keyserver") do |key, options|

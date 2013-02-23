@@ -1,3 +1,6 @@
+* Added --trust and --no-trust options which enforce gnupg trust so we
+  don't install valid but untrusted gems.
+
 * We now use gpg_status_parser instead of just dealing with gpg
   stdout, etc.
 

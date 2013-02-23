@@ -87,7 +87,19 @@ module Gem::OpenPGP
     if failure
       say add_color(failure, :red)
     else
-      say add_color("Signature from user #{uid} key #{primary_key} is #{good_or_bad}, #{sig_status} and #{trust_status}" , :green)
+      sig_msg = "Signature from user #{uid} key #{primary_key} is #{good_or_bad}, #{sig_status} and #{trust_status}"
+      if trust_status == :TRUST_NEVER
+        say add_color(sig_msg, :red)
+        raise Gem::OpenPGPException, "Never Trusted.  Won't install."
+      elsif trust_status == :TRUST_UNDEFINED
+        say add_color(sig_msg, :yellow)
+        if options[:trust] && !options[:no_trust]
+          raise Gem::OpenPGPException, "Trust Undefined and you've specified --trust.  Won't install."
+        end
+      else
+        say add_color(sig_msg , :green)
+      end
+      
     end
 
     [err, res]
@@ -244,6 +256,7 @@ private
     color_code = case color
                  when :green then "32"
                  when :red then "31"
+                 when :yellow then "33"
                  else raise RuntimeError, "Invalid color #{color.inspect}"
                  end
     
