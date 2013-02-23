@@ -54,46 +54,38 @@ module Gem::OpenPGP
 
     homedir_flags = ""
     homedir_flags = "--homedir #{homedir}" if homedir
- 
-    gpg_args = "#{get_key_params} #{homedir_flags} --verify #{sig_file.path} #{data_file.path}"
 
-    good_or_bad = nil
-    sig_status = nil
-    trust_status = nil
-    primary_key = nil
-    uid = nil
-    failure = nil
+    status_info = {}
+    gpg_args = "#{get_key_params} #{homedir_flags} --verify #{sig_file.path} #{data_file.path}"
     
     res, err = run_gpg(gpg_args) do |message|
       case message.status
       when :GOODSIG, :BADSIG, :ERRSIG
-        good_or_bad = message.status
-        uid = message.args[:username]
+        status_info[:good_or_bad] = message.status
+        status_info[:uid] = message.args[:username]
       when :SIG_ID
       when :VALIDSIG, :EXPSIG, :BADSIG
-        sig_status = message.status
-        primary_key = "0x#{message.args[:primary_key_fpr][-9..-1]}"
+        status_info[:sig_status] = message.status
+        status_info[:primary_key] = "0x#{message.args[:primary_key_fpr][-9..-1]}"
       when :TRUST_UNDEFINED, :TRUST_NEVER, :TRUST_MARGINAL, :TRUST_FULLY, :TRUST_ULTIMATE
-        trust_status = message.status
+        status_info[:trust_status] = message.status
       when :NO_PUBKEY
-        failure = "You don't have the public key.  Use --get-key to automagically retrieve from keyservers"
-
+        status_info[:failure] = "You don't have the public key.  Use --get-key to automagically retrieve from keyservers"
       when :IMPORTED, :IMPORT_OK, :IMPORT_RES
+        #silently_ignore
       else
         puts "unknown message status #{message.inspect}"
       end
     end
     
-    puts failure.inspect
-
-    if failure
-      say add_color(failure, :red)
+    if status_info[:failure]
+      say add_color(status_info[:failure], :red)
     else
-      sig_msg = "Signature from user #{uid} key #{primary_key} is #{good_or_bad}, #{sig_status} and #{trust_status}"
-      if trust_status == :TRUST_NEVER
+      sig_msg = "Signature from user #{status_info[:uid]} key #{status_info[:primary_key]} is #{status_info[:good_or_bad]}, #{status_info[:sig_status]} and #{status_info[:trust_status]}"
+      if status_info[:trust_status] == :TRUST_NEVER
         say add_color(sig_msg, :red)
         raise Gem::OpenPGPException, "Never Trusted.  Won't install."
-      elsif trust_status == :TRUST_UNDEFINED
+      elsif status_info[:trust_status] == :TRUST_UNDEFINED
         say add_color(sig_msg, :yellow)
         if options[:trust] && !options[:no_trust]
           raise Gem::OpenPGPException, "Trust Undefined and you've specified --trust.  Won't install."
