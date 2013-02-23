@@ -7,21 +7,21 @@ release.  To verify your initial download, save the following
 signature and manually verify by running:
 
     gem fetch rubygems-openpgp
-    gpg --verify saved_sig.asc rubygems-openpgp-0.3.0.gem
-    gem install rubygems-openpgp-0.3.0.gem
+    gpg --verify saved_sig.asc rubygems-openpgp-0.4.0.gem
+    gem install rubygems-openpgp-0.4.0.gem
 
-Signature for current release (0.3.0):
+Signature for current release (0.4.0):
 
     -----BEGIN PGP SIGNATURE-----
     Version: GnuPG/MacGPG2 v2.0.17 (Darwin)
     
-    iQEcBAABCgAGBQJRF6YqAAoJEP5F5V2hilTWDYQH/jEDDhI6MrgMtJrjtUY7RDdN
-    +MTwkTutOIZ8P35KnKen1gOrNKzrS+Pl5p7m2fa09VBv1e1v7XNsV4Rweh4jQcuP
-    YDR9h0Cn4rexWj9ABC0rGVpvQrTDEJK1acTbBXI0PFs4w0m9DOT/0U5l147W+mii
-    Sg7nUM3Tgvxk38d4djS3ifD+Aq6+Nm3F2hRhamTVfdaerjWJSy4Bg7HW+FaXTqyE
-    dFob+Mv1PZG+VPG78zszq+4WMbhvNAUtegmsXvfl8+j9S142emw2HU2Mcs71QBo4
-    /Tb6iPyaQsXAtR15Z9vO3W/bMTCyZsTq5Hwwgp01MIr+Ek+TjM6DK8wfT65sab8=
-    =N+W6
+    iQEcBAABCgAGBQJRKNPSAAoJEP5F5V2hilTWMS4IAIfrL21CuSrZCof8UcrFPZds
+    LvCEhBKbfE4aB4Jgf8QBc6PXrm916TU8+IcfhWVzHc98ENRui+xUVtJ1LOF7tx31
+    eUcck9VqGZQ7RkI9GpX5Dcbj+0SzL3ghVgVv+UMttwwAahqT8VXvPlS6ttHjroqD
+    87flVoUED/MNFeT8AfGvDp4IOJ+lQl8Y7x6JUJJv+OCOSnG6e/xtQZcMaTf9LKWW
+    z6FO9iplsjbLdwCndKjbPT6bygYRmw8/mF/t3DSJb7wf4HbFjLri24TkwNVZ5o9T
+    hiUjubQJuZrjVTqpaPW7ZF0iL/0xgERCz7gN6SsvIM5MIm3Hok1oZ2oVMS8fzZQ=
+    =RUfl
     -----END PGP SIGNATURE-----
 
 After you've done this, you should be able to verify future releases
@@ -34,6 +34,21 @@ TODO: git gpg verify commands...
 
 Signatures for All Releases
 ---------------------------
+
+### 0.4.0
+
+    -----BEGIN PGP SIGNATURE-----
+    Version: GnuPG/MacGPG2 v2.0.17 (Darwin)
+    
+    iQEcBAABCgAGBQJRKNPSAAoJEP5F5V2hilTWMS4IAIfrL21CuSrZCof8UcrFPZds
+    LvCEhBKbfE4aB4Jgf8QBc6PXrm916TU8+IcfhWVzHc98ENRui+xUVtJ1LOF7tx31
+    eUcck9VqGZQ7RkI9GpX5Dcbj+0SzL3ghVgVv+UMttwwAahqT8VXvPlS6ttHjroqD
+    87flVoUED/MNFeT8AfGvDp4IOJ+lQl8Y7x6JUJJv+OCOSnG6e/xtQZcMaTf9LKWW
+    z6FO9iplsjbLdwCndKjbPT6bygYRmw8/mF/t3DSJb7wf4HbFjLri24TkwNVZ5o9T
+    hiUjubQJuZrjVTqpaPW7ZF0iL/0xgERCz7gN6SsvIM5MIm3Hok1oZ2oVMS8fzZQ=
+    =RUfl
+    -----END PGP SIGNATURE-----
+
 
 ### 0.3.0
 
