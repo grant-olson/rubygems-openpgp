@@ -55,7 +55,7 @@ module Gem::OpenPGP
       when :IMPORTED, :IMPORT_OK, :IMPORT_RES
         #silently_ignore
       else
-        puts "unknown message status #{message.inspect}"
+        puts "unexpected message: #{message.status} #{message.args.inspect}"
       end
   end
 
