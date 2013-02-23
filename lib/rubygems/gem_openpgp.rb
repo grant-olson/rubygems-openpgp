@@ -31,8 +31,10 @@ module Gem::OpenPGP
     homedir_flag = "--homedir #{shellescape(homedir)}" if homedir
 
     gpg_args = "#{key_flag} #{homedir_flag} --detach-sign --armor"
-    sig, err = run_gpg(gpg_args, data) 
-    sig
+    gpg_results = run_gpg(gpg_args, data)
+    did_gpg_error? gpg_results
+
+    gpg_results[:stdout]
   end
 
   
@@ -58,7 +60,7 @@ module Gem::OpenPGP
     status_info = {}
     gpg_args = "#{get_key_params} #{homedir_flags} --verify #{sig_file.path} #{data_file.path}"
     
-    res, err = run_gpg(gpg_args) do |message|
+    gpg_results = run_gpg(gpg_args) do |message|
       case message.status
       when :GOODSIG, :BADSIG, :ERRSIG
         status_info[:good_or_bad] = message.status
@@ -80,6 +82,7 @@ module Gem::OpenPGP
     
     if status_info[:failure]
       say add_color(status_info[:failure], :red)
+      raise Gem::OpenPGPException, "Fail!"
     else
       sig_msg = "Signature from user #{status_info[:uid]} key #{status_info[:primary_key]} is #{status_info[:good_or_bad]}, #{status_info[:sig_status]} and #{status_info[:trust_status]}"
       if status_info[:trust_status] == :TRUST_NEVER
@@ -96,7 +99,9 @@ module Gem::OpenPGP
       
     end
 
-    [err, res]
+    did_gpg_error? gpg_results
+
+    [gpg_results[:stderr], gpg_results[:status]]
   end
 
   # Signs an existing gemfile by iterating the tar'ed up contents,
@@ -194,6 +199,14 @@ module Gem::OpenPGP
 
 private
 
+  def self.did_gpg_error? gpg_results
+    if gpg_results[:status] != 0
+      say add_color("gpg returned unexpected status code", :red)
+      say add_color(gpg_results[:stderr], :red)
+      raise Gem::OpenPGPException, "gpg returned unexpected error code #{gpg_results[:status]}"
+    end
+  end
+
   # Tests to see if gpg is installed and available.
   def self.is_gpg_available
     err_msg = "Unable to find a working gnupg installation.  Make sure gnupg is installed and you can call 'gpg --version' from a command prompt."
@@ -222,17 +235,16 @@ private
     status_file = Tempfile.new("status")
 
     full_gpg_command = "gpg --status-file #{status_file.path} #{args}"
-    stdout, stderr = Open3.popen3(full_gpg_command) do |stdin, stdout, stderr, wait_thr|
+    gpg_results = Open3.popen3(full_gpg_command) do |stdin, stdout, stderr, wait_thr|
       stdin.write data if data
       stdin.close
       exit_status = wait_thr.value
       GPGStatusParser.parse(status_file, &block)
       out = stdout.read()
       err = stderr.read()
-      raise Gem::OpenPGPException, "#{err}" if exit_status != 0
-      [out,err]
+      {:status => exit_status, :stdout => out, :err => err}
     end
-    [stdout, stderr]
+    gpg_results
   ensure
     status_file.close
     status_file.unlink
