@@ -54,21 +54,19 @@ A detailed walkthrough of verifiction is available at
 [The Complete Guide to Verifying Gems with
 rubygems-openpgp](http://www.rubygems-openpgp-ca.org/blog/the-complete-guide-to-verifying-gems-with-rubygems-openpgp.html)
 
-TLDR?
+### TLDR?
 
 A test gem **openpgp_signed_hola** is on rubygems.org.  To try out
 this extension:
 
-    gem install openpgp_signed_hola-0.0.0.gem --verify
+    gem install openpgp_signed_hola-0.0.0.gem --verify  -trust --get-key
 
-But That Just Failed!
----------------------
 
-You probably don't have my public key yet.  You need my public key to
-verify the digital signature.  You also want to perform some
-authentication of that public key.
+### But That Just Failed!
 
-[Notes on retrieving and authenticating public keys.](./doc/retrieving-and-authenticating-keys.md)
+You probably don't *trust* my public key.  More information is
+available at [The Complete Guide to Verifying Gems with
+rubygems-openpgp](http://www.rubygems-openpgp-ca.org/blog/the-complete-guide-to-verifying-gems-with-rubygems-openpgp.html)
 
 Verifying your initial install
 ------------------------------
