@@ -59,7 +59,7 @@ rubygems-openpgp](http://www.rubygems-openpgp-ca.org/blog/the-complete-guide-to-
 A test gem **openpgp_signed_hola** is on rubygems.org.  To try out
 this extension:
 
-    gem install openpgp_signed_hola-0.0.0.gem --verify  -trust --get-key
+    gem install openpgp_signed_hola-0.0.0.gem --verify  --trust --get-key
 
 
 ### But That Just Failed!
