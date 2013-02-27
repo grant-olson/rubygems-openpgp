@@ -67,16 +67,7 @@ authentication of that public key.
 Verifying your initial install
 ------------------------------
 
-All versions of this gem should be signed.  But the first time you
-install the package you run into a bit of a chicken-and-the-egg
-problem.  You can't verify the package until you've installed a copy.
-But if that copy isn't verified, if could already be compromised.
-
-But don't worry.  You can use a stand-alone signature to verify your
-initial install.  Since the stand-alone signature is on github, and
-the software package is on rubygems.org, a malicious user would need
-to compromise both sites to publish a compromised gem and
-compromised/forged digital signature.
-
-[Notes on verifying the initial install.](./doc/verifying-initial-install.md)
+You can verify your initial install with a detached signature.
+[Here's
+how.](http://www.rubygems-openpgp-ca.org/blog/the-complete-guide-to-verifying-your-initial-install.html)
 
