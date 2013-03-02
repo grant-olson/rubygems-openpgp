@@ -1,4 +1,6 @@
 require 'test/unit'
+require 'mocha/setup'
+
 require 'rubygems_plugin'
 require 'rubygems/gem_openpgp'
 require 'tmpdir'
@@ -19,6 +21,8 @@ class RubygemsPluginTest < Test::Unit::TestCase
   end
   
   def test_gem_sign_and_verify
+    Gem::OpenPGP.stubs(:verify_gem_check_fingerprint => true)
+
     in_tmp_gpg_homedir do |gpg_home|
       assert_raise Gem::OpenPGPException do
         Gem::OpenPGP.verify_gem UNSIGNED_GEM, false, gpg_home

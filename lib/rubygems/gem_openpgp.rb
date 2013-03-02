@@ -5,6 +5,7 @@ require 'shellwords'
 require 'open3'
 require 'tempfile'
 require 'gpg_status_parser'
+require 'rubygems/openpgp/keymaster'
 
 # Exception for this class
 class Gem::OpenPGPException < RuntimeError; end
@@ -48,6 +49,7 @@ module Gem::OpenPGP
       when :VALIDSIG, :EXPSIG, :BADSIG
         status_info[:sig_status] = message.status
         status_info[:primary_key] = "0x#{message.args[:primary_key_fpr][-9..-1]}"
+        status_info[:primary_key_fingerprint] = message.args[:primary_key_fpr]
       when :TRUST_UNDEFINED, :TRUST_NEVER, :TRUST_MARGINAL, :TRUST_FULLY, :TRUST_ULTIMATE
         status_info[:trust_status] = message.status
       when :NO_PUBKEY
@@ -82,6 +84,8 @@ module Gem::OpenPGP
   # then raise an exception.
   #
   # Optionally tell gpg to retrive the key if it's not provided
+  #
+  # returns the fingerprint used to sign the file
   def self.verify file_name, data, sig, get_key=false, homedir=nil
     is_gpg_available
     is_homedir_valid homedir if homedir
@@ -109,7 +113,7 @@ module Gem::OpenPGP
 
     did_gpg_error? gpg_results
 
-    [gpg_results[:stderr], gpg_results[:status]]
+    status_info[:primary_key_fingerprint]
   end
 
   # Signs an existing gemfile by iterating the tar'ed up contents,
@@ -167,6 +171,14 @@ module Gem::OpenPGP
     raise
   end
 
+  def self.verify_gem_check_fingerprint gem_name, fingerprint
+    if !Gem::OpenPGP::KeyMaster.check_fingerprint(gem_name, fingerprint)
+      raise Gem::OpenPGPException, "Gem #{gem_name} fingerprint #{fingerprint} didn't match fingerprint in ~/.rubygems-openpgp/known_gems.  Won't install!"
+    end
+  end
+
+
+
   def self.verify_gem gem, get_key=false, homedir=nil
 
     begin
@@ -174,7 +186,8 @@ module Gem::OpenPGP
     rescue Errno::ENOENT => ex
       raise Gem::CommandLineError, "Gem #{gem} not found.  Note you can only verify local gems at this time, so you may need to run 'gem fetch #{gem}' before verifying."  
     end
-    
+
+    fingerprints = []
     tar_files = {}
 
     Gem::Package::TarReader.new(file).each do |f|
@@ -191,8 +204,7 @@ module Gem::OpenPGP
       end
       
       begin
-        err, res = Gem::OpenPGP.verify(file_name, tar_files[file_name], tar_files[sig_file_name], get_key, homedir)
-
+        fingerprints << Gem::OpenPGP.verify(file_name, tar_files[file_name], tar_files[sig_file_name], get_key, homedir)
       rescue Gem::OpenPGPException => ex
         color_code = "31"
         say add_color(ex.message, :red)
@@ -200,6 +212,13 @@ module Gem::OpenPGP
       end
     end
 
+    # Verify fingerprint
+    gem_name = Gem::Format.from_file_by_path(gem).spec.name # rubygems 2.0.0 safe?
+
+    fingerprints.uniq.each do |fp|
+      verify_gem_check_fingerprint gem_name, fp
+    end
+    
   ensure
     file.close unless file.nil?
   end
@@ -209,6 +228,7 @@ private
   def self.did_gpg_error? gpg_results
     if gpg_results[:status] != 0
       say add_color("gpg returned unexpected status code", :red)
+      say add_color(gpg_results[:stdout], :yellow)
       say add_color(gpg_results[:stderr], :red)
       raise Gem::OpenPGPException, "gpg returned unexpected error code #{gpg_results[:status]}"
     end

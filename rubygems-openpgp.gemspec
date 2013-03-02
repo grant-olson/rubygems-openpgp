@@ -11,8 +11,10 @@ Gem::Specification.new do |s|
                    "lib/rubygems_plugin.rb",
   		   "lib/rubygems/commands/verify_command.rb",
                    "lib/rubygems/commands/sign_command.rb",
-		   "lib/rubygems/gem_openpgp.rb"]
-  s.test_files  = ["test/test_rubygems-openpgp.rb",
+		   "lib/rubygems/gem_openpgp.rb",
+                   "lib/rubygems/openpgp/keymaster.rb"]
+  s.test_files  = ["test/test_keymaster.rb",
+                   "test/test_rubygems-openpgp.rb",
                    "test/pablo_escobar_seckey.asc",
 		   "test/pablo_escobar_pubkey.asc",
 		   "test/unsigned_hola-0.0.0.gem"]
@@ -21,5 +23,5 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = ['README.md']
 
   s.add_dependency("gpg_status_parser",">= 0.3.0")
-
+  s.add_development_dependency("mocha", ">= 0.13.2")
 end
