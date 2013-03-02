@@ -180,12 +180,12 @@ module Gem::OpenPGP
 
 
   def self.verify_gem gem, get_key=false, homedir=nil
+    raise Gem::CommandLineError, "Gem #{gem} not found."  if !File.exists?(gem)
 
-    begin
-      file = File.open(gem,"r")
-    rescue Errno::ENOENT => ex
-      raise Gem::CommandLineError, "Gem #{gem} not found.  Note you can only verify local gems at this time, so you may need to run 'gem fetch #{gem}' before verifying."  
-    end
+    gem_name = Gem::Format.from_file_by_path(gem).spec.name # rubygems 2.0.0 safe?
+    say("Verifying #{gem_name}...")
+
+    file = File.open(gem,"r")
 
     fingerprints = []
     tar_files = {}
@@ -213,8 +213,6 @@ module Gem::OpenPGP
     end
 
     # Verify fingerprint
-    gem_name = Gem::Format.from_file_by_path(gem).spec.name # rubygems 2.0.0 safe?
-
     fingerprints.uniq.each do |fp|
       verify_gem_check_fingerprint gem_name, fp
     end
