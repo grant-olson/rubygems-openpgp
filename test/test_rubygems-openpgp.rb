@@ -41,12 +41,12 @@ class RubygemsPluginTest < Test::Unit::TestCase
 
       sig = Gem::OpenPGP.detach_sign data, key_id=nil, homedir=gpg_home
       assert_nothing_raised do
-        Gem::OpenPGP.verify data, sig, false, homedir=gpg_home
+        Gem::OpenPGP.verify "<file>", data, sig, false, homedir=gpg_home
       end
 
       # BAD SIG
       assert_raise(Gem::OpenPGPException) do
-        Gem::OpenPGP.verify data + "\n", sig, false, homedir=gpg_home
+        Gem::OpenPGP.verify "<file>", data + "\n", sig, false, homedir=gpg_home
       end
     end
   end
