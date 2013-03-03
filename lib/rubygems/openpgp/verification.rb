@@ -51,7 +51,12 @@ module Gem::OpenPGP
   def self.verify_gem gem, get_key=false, homedir=nil
     raise Gem::CommandLineError, "Gem #{gem} not found."  if !File.exists?(gem)
 
-    gem_name = Gem::Format.from_file_by_path(gem).spec.name # rubygems 2.0.0 safe?
+    gem_name = if Gem::VERSION[0..1] == "2." #gotta be a better way
+                 Gem::Package.new(gem).spec.name
+               else
+                 Gem::Format.from_file_by_path(gem).spec.name
+               end
+    
     say("Verifying #{gem_name}...")
 
     file = File.open(gem,"r")
