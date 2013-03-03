@@ -2,7 +2,6 @@ require 'rubygems'
 require 'rubygems/package'
 require 'rubygems/user_interaction'
 require 'shellwords'
-require 'open3'
 require 'tempfile'
 require 'gpg_status_parser'
 require 'rubygems/openpgp/keymaster'
@@ -32,7 +31,7 @@ module Gem::OpenPGP
     homedir_flag = "--homedir #{shellescape(homedir)}" if homedir
 
     gpg_args = "#{key_flag} #{homedir_flag} --detach-sign --armor"
-    gpg_results = run_gpg(gpg_args, data)
+    gpg_results = GPGStatusParser.run_gpg(gpg_args, data)
     did_gpg_error? gpg_results
 
     gpg_results[:stdout]
@@ -102,7 +101,7 @@ module Gem::OpenPGP
     gpg_args = "#{get_key_params} #{homedir_flags} --verify #{sig_file.path} #{data_file.path}"
     
     status_info = {:file_name => file_name}
-    gpg_results = run_gpg(gpg_args) { |message| verify_extract_status_info(message, status_info) }
+    gpg_results = GPGStatusParser.run_gpg(gpg_args) { |message| verify_extract_status_info(message, status_info) }
     
     if status_info[:failure]
       say add_color(status_info[:failure], :red)
@@ -255,26 +254,6 @@ private
     end
   end
   
-  def self.run_gpg args, data=nil, &block
-    exit_status = nil
-    status_file = Tempfile.new("status")
-
-    full_gpg_command = "gpg --status-file #{status_file.path} #{args}"
-    gpg_results = Open3.popen3(full_gpg_command) do |stdin, stdout, stderr, wait_thr|
-      stdin.write data if data
-      stdin.close
-      exit_status = wait_thr.value
-      GPGStatusParser.parse(status_file, &block)
-      out = stdout.read()
-      err = stderr.read()
-      {:status => exit_status, :stdout => out, :err => err}
-    end
-    gpg_results
-  ensure
-    status_file.close
-    status_file.unlink
-  end
-
   def self.create_tempfile data
     temp_file = Tempfile.new("rubygems_gpg")
     temp_file.binmode

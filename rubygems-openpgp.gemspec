@@ -22,6 +22,6 @@ Gem::Specification.new do |s|
   s.license     = "BSD 3 Clause"
   s.extra_rdoc_files = ['README.md']
 
-  s.add_dependency("gpg_status_parser",">= 0.3.0")
+  s.add_dependency("gpg_status_parser",">= 0.4.0")
   s.add_development_dependency("mocha", ">= 0.13.2")
 end
