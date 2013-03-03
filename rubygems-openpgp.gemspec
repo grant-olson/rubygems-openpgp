@@ -12,7 +12,12 @@ Gem::Specification.new do |s|
   		   "lib/rubygems/commands/verify_command.rb",
                    "lib/rubygems/commands/sign_command.rb",
 		   "lib/rubygems/gem_openpgp.rb",
-                   "lib/rubygems/openpgp/keymaster.rb"]
+                   "lib/rubygems/openpgp/gpg_helpers.rb",
+                   "lib/rubygems/openpgp/options.rb",
+                   "lib/rubygems/openpgp/signing.rb",
+                   "lib/rubygems/openpgp/verification.rb",
+                   "lib/rubygems/openpgp/keymaster.rb",
+                   "lib/rubygems/openpgp/openpgpexception.rb"]
   s.test_files  = ["test/test_keymaster.rb",
                    "test/test_rubygems-openpgp.rb",
                    "test/pablo_escobar_seckey.asc",
