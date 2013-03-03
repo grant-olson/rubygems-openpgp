@@ -19,7 +19,7 @@ module Gem::OpenPGP
       Dir.mkdir(setting_dir) if !File.directory? setting_dir
 
       if !File.exists?(full_setting_filename)
-        File.open(setting_file,"w").close
+        File.open(full_setting_filename,"w").close
       end
     end
     
