@@ -17,6 +17,8 @@ Gem::Specification.new do |s|
                    "lib/rubygems/openpgp/signing.rb",
                    "lib/rubygems/openpgp/verification.rb",
                    "lib/rubygems/openpgp/keymaster.rb",
+                   "lib/rubygems/openpgp/verify_plugins.rb",
+                   "lib/rubygems/openpgp/sign_plugins.rb",
                    "lib/rubygems/openpgp/openpgpexception.rb"]
   s.test_files  = ["test/test_keymaster.rb",
                    "test/test_rubygems-openpgp.rb",
