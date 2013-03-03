@@ -1,6 +1,2 @@
-require 'rubygems'
-require 'rubygems/package'
-require 'rubygems/user_interaction'
-require 'gpg_status_parser'
 require 'rubygems/openpgp/signing'
 require 'rubygems/openpgp/verification'
