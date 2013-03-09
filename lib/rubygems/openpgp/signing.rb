@@ -53,25 +53,29 @@ module Gem::OpenPGP
     signed_gem = Gem::Package::TarWriter.new(signed_gem_file)
 
     Gem::Package::TarReader.new(unsigned_gem_file).each do |f|
-      say(f.full_name.inspect)
-      
+
       if f.full_name[-4..-1] == ".asc"
-        say("Skipping old signature file #{f.full_name}")
+        say("Skipping old OpenPGP signature file #{f.full_name}")
         next
       end
-      
-      say("Signing #{f.full_name.inspect}...")
 
       file_contents = f.read()
 
+      # Copy file no matter what
       signed_gem.add_file(f.full_name, 0644) do |outfile|
         outfile.write(file_contents)
       end
 
-      signed_gem.add_file(f.full_name + ".asc", 0644) do |outfile|
-        outfile.write(Gem::OpenPGP.detach_sign(file_contents,key,homedir))
+      # Only sign if it's really part of the gem and not
+      # a X.509 sig
+      if f.full_name[-3..-1] == ".gz"
+        say add_color("Signing #{f.full_name.inspect}...",:green)
+        signed_gem.add_file(f.full_name + ".asc", 0644) do |outfile|
+          outfile.write(Gem::OpenPGP.detach_sign(file_contents,key,homedir))
+        end
+      elsif f.full_name[-4..-1] != ".sig"
+        say add_color("Not signing #{f.full_name.inspect}.  Didn't expect to see that...",:yellow)
       end
-
     end
     
     signed_gem_file.close

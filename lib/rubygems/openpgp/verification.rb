@@ -69,7 +69,12 @@ module Gem::OpenPGP
     end
     
     tar_files.keys.each do |file_name|
-      next if file_name[-4..-1] == ".asc"
+      next if [".asc",".sig"].include? file_name[-4..-1]
+
+      if file_name[-3..-1] != ".gz"
+        say add_color("Skipping #{file_name}.  Only expected .gz files...", :yellow)
+        next
+      end
 
       sig_file_name = file_name + ".asc"
       if !tar_files.has_key? sig_file_name

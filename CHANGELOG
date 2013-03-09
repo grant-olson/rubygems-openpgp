@@ -1,3 +1,6 @@
+* Signing/Verifying silently skips existing signature files, and warns 
+  if we see an unexpected non-gz file type.
+
 * Moved run_gpg to gpg_status_parser gem and updated required version.
 
 * Show "Verifying GEM..." before verifying.  Otherwise it's confusing
