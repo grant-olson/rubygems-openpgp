@@ -7,21 +7,21 @@ release.  To verify your initial download, save the following
 signature and manually verify by running:
 
     gem fetch rubygems-openpgp
-    gpg --verify saved_sig.asc rubygems-openpgp-0.5.0.gem
-    gem install rubygems-openpgp-0.5.0.gem
+    gpg --verify saved_sig.asc rubygems-openpgp-0.5.1.gem
+    gem install rubygems-openpgp-0.5.1.gem
 
-Signature for current release (0.5.0):
+Signature for current release (0.5.1):
 
     -----BEGIN PGP SIGNATURE-----
     Version: GnuPG v1.4.11 (GNU/Linux)
     
-    iQEcBAABAgAGBQJRPJY3AAoJEP5F5V2hilTWVj8H/2R3Ue+4lJxbpZwu/cOodlWb
-    ApflZwrhOnGHjxswL7cV7Rf15sPP9WHUvNf/n8Cuc4hHKArW7/wwdw1LP4wmrRz4
-    8RxKx8kR7An9JFvs9HhrDt1BvS/j9moaKn//lZfZV7LPIEEuHEUTCNCtHkuV/oBG
-    LH9tNSMs1CO1D1kkPyxc2aXZm0mRpygWrS1YskJPy7xdR2aNQk4LHJNF168m+XJH
-    2l8U29QgoCpD0W4iL+6ooyY2lyVFWYhQbBd7ojVRG16Q8CxUf4+ZNey+3tgchVEP
-    qBFa4M/+m2LoVdCGPOL8meFMytDR75J4VGWtGmRxjfhBeOeNVhneIQT5C6fHCfw=
-    =Qxhv
+    iQEcBAABAgAGBQJRPMTkAAoJEP5F5V2hilTWuBMH/30hvYMpCP6dawq6LwufKTgB
+    w+hsiII3nRshCo6yicYs8kBsT/7oSc7XZg1q3oHXQgJdal/eLBdVEOXdZ8a7zKPh
+    SjvuHRSBpei3wA1DjPAvJxqjdGOX883rzDLRtP+pvyzazeO6Fj/8d/c8Y6YArEf5
+    gwWdaA2s0XXdecH21yWMZPKD3x2YQEARCJJWhyngt+FW5ZHlaAwXPkhpAptzchEe
+    MC8ThY4WZIPRc3+O9II93wGcNJu3T0sOg5NUzgT6vNLzCOtNLNe/hpD/QWUt/5za
+    RbwqxGcP0QyNDEZQTVpLTBiiq++qyGRUb7cySTDVBqgwasal19VmVsflhTCbBt0=
+    =mU3L
     -----END PGP SIGNATURE-----
 
 After you've done this, you should be able to verify future releases
@@ -34,6 +34,20 @@ TODO: git gpg verify commands...
 
 Signatures for All Releases
 ---------------------------
+
+### 0.5.1
+
+    -----BEGIN PGP SIGNATURE-----
+    Version: GnuPG v1.4.11 (GNU/Linux)
+    
+    iQEcBAABAgAGBQJRPMTkAAoJEP5F5V2hilTWuBMH/30hvYMpCP6dawq6LwufKTgB
+    w+hsiII3nRshCo6yicYs8kBsT/7oSc7XZg1q3oHXQgJdal/eLBdVEOXdZ8a7zKPh
+    SjvuHRSBpei3wA1DjPAvJxqjdGOX883rzDLRtP+pvyzazeO6Fj/8d/c8Y6YArEf5
+    gwWdaA2s0XXdecH21yWMZPKD3x2YQEARCJJWhyngt+FW5ZHlaAwXPkhpAptzchEe
+    MC8ThY4WZIPRc3+O9II93wGcNJu3T0sOg5NUzgT6vNLzCOtNLNe/hpD/QWUt/5za
+    RbwqxGcP0QyNDEZQTVpLTBiiq++qyGRUb7cySTDVBqgwasal19VmVsflhTCbBt0=
+    =mU3L
+    -----END PGP SIGNATURE-----
 
 ### 0.5.0
 
