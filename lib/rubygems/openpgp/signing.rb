@@ -47,8 +47,8 @@ module Gem::OpenPGP
       raise Gem::CommandLineError, "The gem #{gem} does not seem to exist. (#{ex.message})"
     end
 
-    unsigned_gem_file = File.open(unsigned_gem, "r")
-    signed_gem_file = File.open(gem, "w")
+    unsigned_gem_file = File.open(unsigned_gem, "rb")
+    signed_gem_file = File.open(gem, "wb")
 
     signed_gem = Gem::Package::TarWriter.new(signed_gem_file)
 
