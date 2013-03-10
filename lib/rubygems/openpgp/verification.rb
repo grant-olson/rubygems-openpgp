@@ -145,7 +145,7 @@ module Gem::OpenPGP
 
   def self.verify_gem_check_fingerprint gem_name, fingerprint
     if !Gem::OpenPGP::KeyMaster.check_fingerprint(gem_name, fingerprint)
-      raise Gem::OpenPGPException, "Gem #{gem_name} fingerprint #{fingerprint} didn't match fingerprint in ~/.rubygems-openpgp/known_gems.  Won't install!"
+      raise Gem::OpenPGPException, "Gem #{gem_name} fingerprint #{fingerprint} didn't match fingerprint in #{Gem::OpenPGP::KeyMaster.full_setting_filename}.  Won't install!"
     end
   end
 
