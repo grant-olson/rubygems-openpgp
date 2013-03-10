@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'rubygems-openpgp'
-  s.version     = '0.5.0.pre'
-  s.date        = '2013-02-23'
+  s.version     = '0.5.0'
+  s.date        = '2013-03-10'
   s.summary     = "Sign gems via OpenPGP"
   s.description = "Digitally sign gems via OpenPGP."
   s.authors     = ["Grant Olson"]
