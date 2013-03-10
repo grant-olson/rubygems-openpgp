@@ -1,6 +1,3 @@
-#
-# TODO: Does it actually work on Windows?
-# TODO: should we 700 the directory?  And what will that do on Windows?
 module Gem::OpenPGP
   # Capture used signing keys so we can see if they changed.
   module KeyMaster
@@ -16,7 +13,7 @@ module Gem::OpenPGP
       home_dir = ENV["HOME"] || ENV["HOMEPATH"]
       
       setting_dir = File.join(home_dir, SETTING_DIR)
-      Dir.mkdir(setting_dir) if !File.directory? setting_dir
+      Dir.mkdir(setting_dir, 0700) if !File.directory? setting_dir
 
       if !File.exists?(full_setting_filename)
         File.open(full_setting_filename,"w").close
