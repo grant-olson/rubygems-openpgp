@@ -1,8 +1,12 @@
 require 'rubygems'
 require 'rubygems/package'
 require 'rubygems/user_interaction'
+
 require 'tempfile'
+require 'rbconfig'
+
 require 'gpg_status_parser'
+
 require 'rubygems/openpgp/keymaster'
 require 'rubygems/openpgp/options'
 require 'rubygems/openpgp/gpg_helpers'
@@ -165,8 +169,12 @@ module Gem::OpenPGP
                  else raise RuntimeError, "Invalid color #{color.inspect}"
                  end
     
-    #TODO - NO-OP on windows
-    "\033[#{color_code}m#{s}\033[0m"
+    if (RbConfig::CONFIG['host_os'] =~ /mswin|mingw/) 
+      s # no colors on windows
+    else
+      "\033[#{color_code}m#{s}\033[0m"
+    end
+    
   end
 
 end
