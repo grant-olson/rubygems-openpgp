@@ -116,7 +116,7 @@ module Gem::OpenPGP
       when :SIG_ID
       when :VALIDSIG, :EXPSIG, :BADSIG
         status_info[:sig_status] = message.status
-        status_info[:primary_key] = "0x#{message.args[:primary_key_fpr][-9..-1]}"
+        status_info[:primary_key] = "0x#{message.args[:primary_key_fpr][-8..-1]}"
         status_info[:primary_key_fingerprint] = message.args[:primary_key_fpr]
       when :TRUST_UNDEFINED, :TRUST_NEVER, :TRUST_MARGINAL, :TRUST_FULLY, :TRUST_ULTIMATE
         status_info[:trust_status] = message.status
