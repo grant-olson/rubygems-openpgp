@@ -24,6 +24,16 @@ class Gem::Commands::VerifyCommand < Gem::Command
       options[:get_key] = true
     end
 
+    add_option("--trust",
+                 'Enforce gnupg trust settings.  Only install if trusted.') do |value, options|
+      Gem::OpenPGP.options[:trust] = true
+    end
+
+    add_option("--no-trust",
+                 "Ignoure gnupg trust settings,  even if --trust has previously been specified") do |value, options|
+      Gem::OpenPGP.options[:no_trust] = true
+    end
+
   end
 
   def arguments # :nodoc:

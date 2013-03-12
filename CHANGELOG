@@ -1,3 +1,5 @@
+* Allow `gem verify foo-0.0.0.gem --trust`
+
 * Show 8 digit short id, not 9 digits.
 
 0.5.1 - 2013-03-10
