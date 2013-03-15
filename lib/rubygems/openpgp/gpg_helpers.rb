@@ -14,11 +14,29 @@ private
 
   # Tests to see if gpg is installed and available.
   def self.is_gpg_available
-    err_msg = "Unable to find a working gnupg installation.  Make sure gnupg is installed and you can call 'gpg --version' from a command prompt."
+    
     `gpg --version`
-    raise Gem::OpenPGPException, err_msg if $? != 0
+    abort_if_shell_error
   rescue Errno::ENOENT => ex
-    raise Gem::OpenPGPException, err_msg if $? != 0
+    abort_if_shell_error
   end
+
+  def self.abort_if_shell_error
+    install_msg = <<FOO
+Couldn't find gpg.  Don't have it? It'll only take a few minutes to install.
+
+Windows installer available at http://gpg4win.org/
+
+OSX installer available at https://www.gpgtools.org/
+
+FOO
+    err_msg = "Unable to find a working gnupg installation.  Make sure gnupg is installed and you can call 'gpg --version' from a command prompt."
+
+    if $? != 0
+      puts install_msg
+      raise Gem::OpenPGPException, err_msg
+    end
+  end
+  
 
 end
