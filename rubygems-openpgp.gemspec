@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'rubygems-openpgp'
-  s.version     = '0.6.0.pre'
-  s.date        = '2013-03-10'
+  s.version     = '0.6.0'
+  s.date        = '2013-03-18'
   s.summary     = "Sign gems via OpenPGP"
   s.description = "Digitally sign gems via OpenPGP."
   s.authors     = ["Grant Olson"]
@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
                    "test/pablo_escobar_seckey.asc",
 		   "test/pablo_escobar_pubkey.asc",
 		   "test/unsigned_hola-0.0.0.gem"]
-  s.homepage    = 'http://www.rubygems-openpgp-ca.org'
+  s.homepage    = 'https://www.rubygems-openpgp-ca.org'
   s.license     = "BSD 3 Clause"
   s.extra_rdoc_files = ['README.md']
 

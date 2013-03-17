@@ -1,3 +1,6 @@
+0.6.0 - 2013-03-18
+==================
+
 * --trust now automatically implies --verify.  #29
 
 * Look up a gem's owner at rubygems.org if possible, and verify that
