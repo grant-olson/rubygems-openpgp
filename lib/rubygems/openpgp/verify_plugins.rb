@@ -27,6 +27,11 @@ i.add_option("--no-trust",
   Gem::OpenPGP.options[:no_trust] = true
 end
 
+i.add_option("--ignore-owner-check",
+             "Ignore a failed ownership check against rubygems.org") do |value, options|
+  Gem::OpenPGP.options[:ignore_owner_check] = true
+end
+
 i.add_option('--get-key', "If the key is not available, download it from a keyserver") do |key, options|
   Gem::OpenPGP.options[:get_key] = true
 end

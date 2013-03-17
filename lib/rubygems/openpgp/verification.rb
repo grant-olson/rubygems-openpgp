@@ -98,21 +98,28 @@ module Gem::OpenPGP
 
     fingerprints.uniq!
     
-    # Verify fingerprint
+    # Verify fingerprint and owner
     fingerprints.each do |fp|
       verify_gem_check_fingerprint gem_name, fp
+      owner_checks gem_name, fp
     end
     
-    # Verify against rubygems
-    fingerprints.each do |fp|
-      check_rubygems_org_owner gem_name, fp
-    end
-
   ensure
     file.close unless file.nil?
   end
 
   private
+
+  def self.owner_checks gem_name, fp
+    if !check_rubygems_org_owner(gem_name, fp)
+      if options[:ignore_owner_check]
+        say add_color("Ignoring bad owner status because you told me to!",:yellow)
+      else
+        say add_color("Use --ignore-owner-check to install anyway.", :yellow)
+        raise Gem::OpenPGPException, "BADOWNER"
+      end
+    end
+  end
 
   # Extract the info we care about, throw away the rest  
   def self.verify_extract_status_info message, status_info

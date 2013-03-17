@@ -63,6 +63,9 @@ module Gem::OpenPGP
     end
     
     good_owner
+  rescue Errno::ECONNREFUSED => ex
+    say add_color("Can't verify ownership.  Couldn't connect with rubygems.org.", :yellow)
+    return false
   end
   
 end
