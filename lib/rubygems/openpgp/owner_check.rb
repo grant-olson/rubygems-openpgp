@@ -19,7 +19,7 @@ module Gem::OpenPGP
 
       # If we're in --trust mode, we skip unknown uids.
       if options[:trust]
-        next if !['f','m'].include?(trust)
+        next if !['f','m','u'].include?(trust)
       end
 
       uid = fields[9]
