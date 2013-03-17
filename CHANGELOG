@@ -1,3 +1,6 @@
+* Look up a gem's owner at rubygems.org if possible, and verify that
+  this matches a trusted UID on the signing key, if possible.
+
 * Provide installer links if we can't find gpg.
 
 * Allow `gem verify foo-0.0.0.gem --trust`
