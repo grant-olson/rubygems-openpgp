@@ -39,7 +39,8 @@ end
 Gem.pre_install do |installer|
   begin
     # --no-verify overrides --verify
-    if Gem::OpenPGP.options[:verify] && !Gem::OpenPGP.options[:no_verify]
+    if (Gem::OpenPGP.options[:verify] && !Gem::OpenPGP.options[:no_verify]) ||
+        (Gem::OpenPGP.options[:trust] && !Gem::OpenPGP.options[:no_trust])
       Gem::OpenPGP.verify_gem(installer.gem,
                               Gem::OpenPGP.options[:get_key])
     end
