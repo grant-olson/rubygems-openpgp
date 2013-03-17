@@ -7,21 +7,21 @@ release.  To verify your initial download, save the following
 signature and manually verify by running:
 
     gem fetch rubygems-openpgp
-    gpg --verify saved_sig.asc rubygems-openpgp-0.5.1.gem
-    gem install rubygems-openpgp-0.5.1.gem
+    gpg --verify saved_sig.asc rubygems-openpgp-0.6.0.gem
+    gem install rubygems-openpgp-0.6.0.gem
 
-Signature for current release (0.5.1):
+Signature for current release (0.6.0):
 
     -----BEGIN PGP SIGNATURE-----
-    Version: GnuPG v1.4.11 (GNU/Linux)
+    Version: GnuPG v2.0.17 (GNU/Linux)
     
-    iQEcBAABAgAGBQJRPMTkAAoJEP5F5V2hilTWuBMH/30hvYMpCP6dawq6LwufKTgB
-    w+hsiII3nRshCo6yicYs8kBsT/7oSc7XZg1q3oHXQgJdal/eLBdVEOXdZ8a7zKPh
-    SjvuHRSBpei3wA1DjPAvJxqjdGOX883rzDLRtP+pvyzazeO6Fj/8d/c8Y6YArEf5
-    gwWdaA2s0XXdecH21yWMZPKD3x2YQEARCJJWhyngt+FW5ZHlaAwXPkhpAptzchEe
-    MC8ThY4WZIPRc3+O9II93wGcNJu3T0sOg5NUzgT6vNLzCOtNLNe/hpD/QWUt/5za
-    RbwqxGcP0QyNDEZQTVpLTBiiq++qyGRUb7cySTDVBqgwasal19VmVsflhTCbBt0=
-    =mU3L
+    iQEcBAABAgAGBQJRRf0qAAoJEP5F5V2hilTWnhwIAIeCxmyiUT4C7/VPLvpwPypX
+    IGrhaA3hZZzknAh2MxKx+OPiWDt7ynvSlfdbdYbkSbiKv4ho4husLrhfGV7COKws
+    HImXCE4SF+Zhb2WifI7haSCRfrZ4M0z/4adalcB4GpkDRmRYuw1RI92PDLOADLSD
+    u80FPfEF2ekRJqFAUU1Ayzpl8MCfl8e6uzj2CZ8CKtceApb6HZbdWA/jhvuIjXXM
+    tJDAE22rugFw8ba6e9iinFHYpo9XYMG551YzR70lAqWXtxjgAM3jVDGlAXpkQGxM
+    9WTas7RRYmLH1h+JvB/DFR61oZaC3gzBP1IS42KOnXywwcq/rK6/CltPf6MZtco=
+    =aA4r
     -----END PGP SIGNATURE-----
 
 After you've done this, you should be able to verify future releases
@@ -34,6 +34,20 @@ TODO: git gpg verify commands...
 
 Signatures for All Releases
 ---------------------------
+
+### 0.6.0
+
+    -----BEGIN PGP SIGNATURE-----
+    Version: GnuPG v2.0.17 (GNU/Linux)
+    
+    iQEcBAABAgAGBQJRRf0qAAoJEP5F5V2hilTWnhwIAIeCxmyiUT4C7/VPLvpwPypX
+    IGrhaA3hZZzknAh2MxKx+OPiWDt7ynvSlfdbdYbkSbiKv4ho4husLrhfGV7COKws
+    HImXCE4SF+Zhb2WifI7haSCRfrZ4M0z/4adalcB4GpkDRmRYuw1RI92PDLOADLSD
+    u80FPfEF2ekRJqFAUU1Ayzpl8MCfl8e6uzj2CZ8CKtceApb6HZbdWA/jhvuIjXXM
+    tJDAE22rugFw8ba6e9iinFHYpo9XYMG551YzR70lAqWXtxjgAM3jVDGlAXpkQGxM
+    9WTas7RRYmLH1h+JvB/DFR61oZaC3gzBP1IS42KOnXywwcq/rK6/CltPf6MZtco=
+    =aA4r
+    -----END PGP SIGNATURE-----
 
 ### 0.5.1
 
