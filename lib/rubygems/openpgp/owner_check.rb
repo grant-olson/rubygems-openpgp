@@ -2,6 +2,25 @@ require 'rubygems/user_interaction'
 require 'gems'
 
 module Gem::OpenPGP
+  def self.check_rubygems_org_owner gem_name, fingerprint
+    uids_and_trust = get_good_uids(fingerprint)
+    owners = Gems.owners(gem_name).map { |o| o["email"] }
+    
+    good_owner_status = find_good_owner(uids_and_trust, owners)
+    if !good_owner_status
+      valid_uids = uids_and_trust.map { |x| x[:uid] }
+      say add_color("Couldn't match good UID against rubygems.org owners!", :red)
+      say add_color("\tGood User Ids: #{valid_uids.inspect}", :red)
+      say add_color("\trubygems.org owners #{owners.inspect}", :red)
+    end
+    
+    good_owner_status
+  rescue Errno::ECONNREFUSED => ex
+    say add_color("Can't verify ownership.  Couldn't connect with rubygems.org.", :yellow)
+    return false
+  end
+
+private
 
   # Extract good trusted UIDs from a given fingerprint
   def self.get_good_uids fingerprint
@@ -49,23 +68,6 @@ module Gem::OpenPGP
 
     good_owner
   end
-  
-  def self.check_rubygems_org_owner gem_name, fingerprint
-    uids_and_trust = get_good_uids(fingerprint)
-    owners = Gems.owners(gem_name).map { |o| o["email"] }
-    
-    good_owner = find_good_owner(uids_and_trust, owners)
-    if !good_owner
-      valid_uids = uids_and_trust.map { |x| x[:uid] }
-      say add_color("Couldn't match good UID against rubygems.org owners!", :red)
-      say add_color("\tGood User Ids: #{valid_uids.inspect}", :red)
-      say add_color("\trubygems.org owners #{owners.inspect}", :red)
-    end
-    
-    good_owner
-  rescue Errno::ECONNREFUSED => ex
-    say add_color("Can't verify ownership.  Couldn't connect with rubygems.org.", :yellow)
-    return false
-  end
+
   
 end
