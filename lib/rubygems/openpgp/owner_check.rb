@@ -10,8 +10,8 @@ module Gem::OpenPGP
     if !good_owner_status
       valid_uids = uids_and_trust.map { |x| x[:uid] }
       say add_color("Couldn't match good UID against rubygems.org owners!", :red)
-      say add_color("\tGood User Ids: #{valid_uids.inspect}", :red)
-      say add_color("\trubygems.org owners #{owners.inspect}", :red)
+      say add_color("\tGood User Ids: #{pretty_email_list(valid_uids)}", :red)
+      say add_color("\trubygems.org Owners: #{pretty_email_list(owners)}", :red)
     end
     
     good_owner_status
@@ -22,6 +22,10 @@ module Gem::OpenPGP
 
 private
 
+  def self.pretty_email_list list
+    list.select { |x| !(x.nil? || x.empty?)}.join(", ")
+  end
+  
   # Extract good trusted UIDs from a given fingerprint
   def self.get_good_uids fingerprint
     good_uids = []
