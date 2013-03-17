@@ -15,8 +15,13 @@ module Gem::OpenPGP
       next if !['pub','uid'].include?(fields.first)
 
       trust = fields[1]
-      next if ['r','i','d','e','n','-'].include? trust
-      
+      next if ['r','i','d','e','n'].include? trust # clearly invalid
+
+      # If we're in --trust mode, we skip unknown uids.
+      if options[:trust]
+        next if !['f','m'].include?(trust)
+      end
+
       uid = fields[9]
       good_uids << {:uid => uid, :trust => trust}
     end
