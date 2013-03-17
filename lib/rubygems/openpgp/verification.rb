@@ -11,6 +11,7 @@ require 'rubygems/openpgp/keymaster'
 require 'rubygems/openpgp/options'
 require 'rubygems/openpgp/gpg_helpers'
 require 'rubygems/openpgp/openpgpexception'
+require 'rubygems/openpgp/owner_check'
 
 module Gem::OpenPGP
   extend Gem::UserInteraction
@@ -35,7 +36,7 @@ module Gem::OpenPGP
     homedir_flags = ""
     homedir_flags = "--homedir #{homedir}" if homedir
 
-    gpg_args = "#{get_key_params} #{homedir_flags} --verify #{sig_file.path} #{data_file.path}"
+    gpg_args = "#{get_key_params} #{homedir_flags} --with-colons --verify #{sig_file.path} #{data_file.path}"
     
     status_info = {:file_name => file_name}
     gpg_results = GPGStatusParser.run_gpg(gpg_args) { |message| verify_extract_status_info(message, status_info) }
@@ -86,7 +87,7 @@ module Gem::OpenPGP
         raise Gem::OpenPGPException, "Can't verify without sig, aborting!!!"
       end
       
-      begin
+       begin
         fingerprints << Gem::OpenPGP.verify(file_name, tar_files[file_name], tar_files[sig_file_name], get_key, homedir)
       rescue Gem::OpenPGPException => ex
         color_code = "31"
@@ -95,11 +96,18 @@ module Gem::OpenPGP
       end
     end
 
+    fingerprints.uniq!
+    
     # Verify fingerprint
-    fingerprints.uniq.each do |fp|
+    fingerprints.each do |fp|
       verify_gem_check_fingerprint gem_name, fp
     end
     
+    # Verify against rubygems
+    fingerprints.each do |fp|
+      check_rubygems_org_owner gem_name, fp
+    end
+
   ensure
     file.close unless file.nil?
   end
