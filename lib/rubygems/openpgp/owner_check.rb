@@ -4,7 +4,15 @@ require 'gems'
 module Gem::OpenPGP
   def self.check_rubygems_org_owner gem_name, fingerprint
     uids_and_trust = get_good_uids(fingerprint)
-    owners = Gems.owners(gem_name).map { |o| o["email"] }
+    
+    owners_result = Gems.owners(gem_name)
+    if owners_result.is_a? Array
+      owners = owners_result.map { |o| o["email"] }
+    else
+      say add_color("Error getting owner info from rubygems.org: #{owners_result.to_s}", :red)
+      return false
+    end
+    
     
     good_owner_status = find_good_owner(uids_and_trust, owners)
     if !good_owner_status
