@@ -13,18 +13,14 @@ module Gem::OpenPGP
   # signature.  By defualt, this will use your primary secret key.
   # This can be overridden by specifying a key_id for another 
   # private key.
-  def self.detach_sign data, key_id=nil, homedir=nil
+  def self.detach_sign data, key_id=nil
     is_gpg_available
     is_key_valid key_id if key_id
-    is_homedir_valid homedir if homedir
 
     key_flag = ""
     key_flag = "-u #{shellescape(key_id)}" if key_id
 
-    homedir_flag = ""
-    homedir_flag = "--homedir #{shellescape(homedir)}" if homedir
-
-    gpg_args = "#{key_flag} #{homedir_flag} #{Gem::OpenPGP.get_gpg_options} --detach-sign --armor"
+    gpg_args = "#{key_flag} #{Gem::OpenPGP.get_gpg_options} --detach-sign --armor"
     gpg_results = GPGStatusParser.run_gpg(gpg_args, data)
     did_gpg_error? gpg_results
 
@@ -38,7 +34,7 @@ module Gem::OpenPGP
   #
   # Optional param "key" allows you to use a different private
   # key than the GPG default.
-  def self.sign_gem gem, key=nil, homedir=nil
+  def self.sign_gem gem, key=nil
     unsigned_gem = gem + ".unsigned"
 
     begin
@@ -71,7 +67,7 @@ module Gem::OpenPGP
       if f.full_name[-3..-1] == ".gz"
         say add_color("Signing #{f.full_name.inspect}...",:green)
         signed_gem.add_file(f.full_name + ".asc", 0644) do |outfile|
-          outfile.write(Gem::OpenPGP.detach_sign(file_contents,key,homedir))
+          outfile.write(Gem::OpenPGP.detach_sign(file_contents,key))
         end
       elsif f.full_name[-4..-1] != ".sig"
         say add_color("Not signing #{f.full_name.inspect}.  Didn't expect to see that...",:yellow)
@@ -100,10 +96,4 @@ module Gem::OpenPGP
     end
   end
  
-  def self.is_homedir_valid homedir
-    if !File.exists? homedir
-      raise OpenPGPException, "Bad homedir #{homedir.inspect}"
-    end
-  end
-
 end

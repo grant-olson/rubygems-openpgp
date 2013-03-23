@@ -23,9 +23,8 @@ module Gem::OpenPGP
   # Optionally tell gpg to retrive the key if it's not provided
   #
   # returns the fingerprint used to sign the file
-  def self.verify file_name, data, sig, get_key=false, homedir=nil
+  def self.verify file_name, data, sig, get_key=false
     is_gpg_available
-    is_homedir_valid homedir if homedir
 
     data_file = create_tempfile data
     sig_file = create_tempfile sig
@@ -33,10 +32,7 @@ module Gem::OpenPGP
     get_key_params = "--keyserver pool.sks-keyservers.net --keyserver-options auto-key-retrieve"
     get_key_params = "" if get_key != true
 
-    homedir_flags = ""
-    homedir_flags = "--homedir #{homedir}" if homedir
-
-    gpg_args = "#{get_key_params} #{homedir_flags} #{Gem::OpenPGP.get_gpg_options} --with-colons --verify #{sig_file.path} #{data_file.path}"
+    gpg_args = "#{get_key_params} #{Gem::OpenPGP.get_gpg_options} --with-colons --verify #{sig_file.path} #{data_file.path}"
     
     status_info = {:file_name => file_name}
     gpg_results = GPGStatusParser.run_gpg(gpg_args) { |message| verify_extract_status_info(message, status_info) }
@@ -53,7 +49,7 @@ module Gem::OpenPGP
     status_info[:primary_key_fingerprint]
   end
 
-  def self.verify_gem gem, get_key=false, homedir=nil
+  def self.verify_gem gem, get_key=false
     raise Gem::CommandLineError, "Gem #{gem} not found."  if !File.exists?(gem)
 
     gem_name = if Gem::VERSION[0..1] == "2." #gotta be a better way
@@ -88,7 +84,7 @@ module Gem::OpenPGP
       end
       
        begin
-        fingerprints << Gem::OpenPGP.verify(file_name, tar_files[file_name], tar_files[sig_file_name], get_key, homedir)
+        fingerprints << Gem::OpenPGP.verify(file_name, tar_files[file_name], tar_files[sig_file_name], get_key)
       rescue Gem::OpenPGPException => ex
         color_code = "31"
         say add_color(ex.message, :red)
