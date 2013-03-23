@@ -7,7 +7,7 @@ module Gem::OpenPGP
   WHITELISTED_GPG_OPTIONS = {
     "homedir" => "dir",
     "verbose" => nil,
-    "default-user" => "user_id",
+    "default-key" => "user_id",
     "local-user" => "user_id",
     "passphrase-fd" => "file_descriptor",
     "passphrase-file" => "file_name"
