@@ -10,7 +10,8 @@ module Gem::OpenPGP
     "default-key" => "user_id",
     "local-user" => "user_id",
     "passphrase-fd" => "file_descriptor",
-    "passphrase-file" => "file_name"
+    "passphrase-file" => "file_name",
+    "options" => "file_name"
   }
 
   def self.gpg_options
@@ -23,7 +24,7 @@ module Gem::OpenPGP
       mangled_flag = "--gpg-#{flag}"
       mangled_flag += " #{arg}" if arg.is_a? String
 
-      cmd.add_option(mangled_flag,"Forward option --#{flag} to gpg") do |value, options|
+      cmd.add_option(mangled_flag,"Forward --#{flag} to gpg") do |value, options|
         value = true if arg.nil? #boolean
         gpg_options[flag] = value
       end
