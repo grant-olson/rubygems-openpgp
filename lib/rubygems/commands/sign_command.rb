@@ -19,6 +19,7 @@ class Gem::Commands::SignCommand < Gem::Command
     add_version_option
 
     add_option('--key KEY', "Specify key id if you don't want to use your default gpg key") do |key, options|
+      warn("--key deprecated.  Use --gpg-local-user instead")
       options[:key] = key
     end
   end

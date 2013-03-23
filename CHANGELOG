@@ -1,3 +1,6 @@
+* Add deprecation warning for --key option.  Users should use
+  --gpg-local-user instead.  --key will be removed in 1.0.
+
 * Allow forwarding of select gpg options with commands like
 --gpg-homedir.  run `gem verify --help` to see a list of all options.
 

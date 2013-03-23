@@ -10,6 +10,7 @@ b.add_option("--sign", "Sign gem with OpenPGP.") do |value, options|
 end
 
 b.add_option('--key KEY', "Specify key id if you don't want to use your default gpg key") do |key, options|
+  warn("--key deprecated.  Use --gpg-local-user instead")
   Gem::OpenPGP.options[:key] = key
 end
 
