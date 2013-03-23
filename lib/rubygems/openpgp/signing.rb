@@ -24,7 +24,7 @@ module Gem::OpenPGP
     homedir_flag = ""
     homedir_flag = "--homedir #{shellescape(homedir)}" if homedir
 
-    gpg_args = "#{key_flag} #{homedir_flag} --detach-sign --armor"
+    gpg_args = "#{key_flag} #{homedir_flag} #{Gem::OpenPGP.get_gpg_options} --detach-sign --armor"
     gpg_results = GPGStatusParser.run_gpg(gpg_args, data)
     did_gpg_error? gpg_results
 

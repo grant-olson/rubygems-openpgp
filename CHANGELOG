@@ -1,3 +1,6 @@
+* Allow forwarding of select gpg options with commands like
+--gpg-homedir.  run `gem verify --help` to see a list of all options.
+
 * Fail gracefully when rubygems.org doesn't return owner list, for
   example when a gem has never been published to rubygems.org.
 

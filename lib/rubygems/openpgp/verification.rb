@@ -36,7 +36,7 @@ module Gem::OpenPGP
     homedir_flags = ""
     homedir_flags = "--homedir #{homedir}" if homedir
 
-    gpg_args = "#{get_key_params} #{homedir_flags} --with-colons --verify #{sig_file.path} #{data_file.path}"
+    gpg_args = "#{get_key_params} #{homedir_flags} #{Gem::OpenPGP.get_gpg_options} --with-colons --verify #{sig_file.path} #{data_file.path}"
     
     status_info = {:file_name => file_name}
     gpg_results = GPGStatusParser.run_gpg(gpg_args) { |message| verify_extract_status_info(message, status_info) }

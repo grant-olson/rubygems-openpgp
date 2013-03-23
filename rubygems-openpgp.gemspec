@@ -20,9 +20,11 @@ Gem::Specification.new do |s|
                    "lib/rubygems/openpgp/verify_plugins.rb",
                    "lib/rubygems/openpgp/sign_plugins.rb",
                    "lib/rubygems/openpgp/owner_check.rb",
+                   "lib/rubygems/openpgp/gpg_options.rb",
                    "lib/rubygems/openpgp/openpgpexception.rb"]
   s.test_files  = ["test/test_keymaster.rb",
                    "test/test_rubygems-openpgp.rb",
+                   "test/test_gpg_options.rb",
                    "test/pablo_escobar_seckey.asc",
 		   "test/pablo_escobar_pubkey.asc",
 		   "test/unsigned_hola-0.0.0.gem"]
