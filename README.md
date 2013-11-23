@@ -1,12 +1,6 @@
 rubygems-openpgp
 ================
 
-Information for gem users and gem developers is slowly and surely migrating
-to the [rubygems-openpgp Certificate
-Authority](http://rubygems-openpgp-ca.org).  You probably want to go
-there unless you're interested in working on the plugin itself.
-
-
 Software Assurance
 ------------------
 
