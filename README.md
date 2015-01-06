@@ -46,7 +46,7 @@ Verification Example
 
 A detailed walkthrough of verifiction is available at
 [The Complete Guide to Verifying Gems with
-rubygems-openpgp](http://www.rubygems-openpgp-ca.org/blog/the-complete-guide-to-verifying-gems-with-rubygems-openpgp.html)
+rubygems-openpgp](http://desolate-spire-6189.herokuapp.com/blog/the-complete-guide-to-verifying-gems-with-rubygems-openpgp.html)
 
 ### TLDR?
 
@@ -60,12 +60,12 @@ this extension:
 
 You probably don't *trust* my public key.  More information is
 available at [The Complete Guide to Verifying Gems with
-rubygems-openpgp](http://www.rubygems-openpgp-ca.org/blog/the-complete-guide-to-verifying-gems-with-rubygems-openpgp.html)
+rubygems-openpgp](http://desolate-spire-6189.herokuapp.com/blog/the-complete-guide-to-verifying-gems-with-rubygems-openpgp.html)
 
 Verifying your initial install
 ------------------------------
 
 You can verify your initial install with a detached signature.
 [Here's
-how.](http://www.rubygems-openpgp-ca.org/blog/the-complete-guide-to-verifying-your-initial-install.html)
+how.](http://desolate-spire-6189.herokuapp.com/blog/the-complete-guide-to-verifying-your-initial-install.html)
 
