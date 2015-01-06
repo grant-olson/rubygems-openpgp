@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
                    "test/pablo_escobar_seckey.asc",
 		   "test/pablo_escobar_pubkey.asc",
 		   "test/unsigned_hola-0.0.0.gem"]
-  s.homepage    = 'https://www.rubygems-openpgp-ca.org'
+  s.homepage    = 'https://github.com/grant-olson/rubygems-openpgp'
   s.license     = "BSD 3 Clause"
   s.extra_rdoc_files = ['README.md']
 
