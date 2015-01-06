@@ -69,5 +69,4 @@ Verifying your initial install
 
 You can verify your initial install with a detached signature.
 [Here's
-how.](http://desolate-spire-6189.herokuapp.com/blog/the-complete-guide-to-verifying-your-initial-install.html)
-
+how.](./doc/verifying-initial-install.md)
