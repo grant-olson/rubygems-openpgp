@@ -39,16 +39,10 @@ Signing example
 ---------------
 
     gem build openpgp_signed_hola.gemspec --sign
-    gem push opnepgp_signed_hola-0.0.0.gem
+    gem push openpgp_signed_hola-0.0.0.gem
 
 Verification Example
 --------------------
-
-A detailed walkthrough of verifiction is available at
-[The Complete Guide to Verifying Gems with
-rubygems-openpgp](http://desolate-spire-6189.herokuapp.com/blog/the-complete-guide-to-verifying-gems-with-rubygems-openpgp.html)
-
-### TLDR?
 
 A test gem **openpgp_signed_hola** is on rubygems.org.  To try out
 this extension:
@@ -61,6 +55,14 @@ this extension:
 You probably don't *trust* my public key.  More information is
 available at [The Complete Guide to Verifying Gems with
 rubygems-openpgp](http://desolate-spire-6189.herokuapp.com/blog/the-complete-guide-to-verifying-gems-with-rubygems-openpgp.html)
+
+
+### The More You Know!
+
+A detailed walkthrough of verifiction is available at
+[The Complete Guide to Verifying Gems with
+rubygems-openpgp](http://desolate-spire-6189.herokuapp.com/blog/the-complete-guide-to-verifying-gems-with-rubygems-openpgp.html)
+
 
 Verifying your initial install
 ------------------------------
